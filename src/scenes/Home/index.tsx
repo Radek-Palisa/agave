@@ -1,34 +1,34 @@
 import React from 'react';
-import { RouteComponentProps } from '@reach/router';
+import { RouteComponentProps, Link } from '@reach/router';
+import DayEntry from '../../components/DayEntry';
+import useGetEntriesOnMount from '../../services/useGetEntriesOnMount';
+import MonthDelimiter from '../../components/MonthDelimiter';
+import NavHeader from '../../components/NavHeader';
 import { Typography } from '@material-ui/core';
 
-const data = [
-  {
-    day: 23,
-    entry: `Donec sit amet augue at enim sollicitudin porta. Praesent finibus ex velit, quis faucibus
-    libero congue et. Quisque convallis eu nisl et congue. Vivamus eget augue quis ante malesuada
-    ullamcorper. Sed orci nulla, eleifend eget dui faucibus, facilisis aliquet ante. Suspendisse
-    sollicitudin nibh lacus, ut bibendum risus elemen`,
-  },
-];
-
-function Entry({ day, entry }: any) {
-  return (
-    <div style={{ display: 'flex' }}>
-      <Typography style={{ minWidth: '50px' }} variant="h6" align="center" component="h3">
-        {day}
-      </Typography>
-      <Typography variant="body2">{entry}</Typography>
-    </div>
-  );
-}
-
 export default function Home(props: RouteComponentProps) {
+  const months = useGetEntriesOnMount();
+
   return (
     <div className="page">
-      {data.map(item => (
-        <Entry key={item.day} {...item} />
-      ))}
+      <NavHeader>
+        <Link to="login">Login</Link>
+        <Link to="add">Add</Link>
+      </NavHeader>
+      {months.data &&
+        months.data.map(({ month, year, days }) => (
+          <div key={`${month}-${year}`}>
+            {days.map(({ day, entries }: any) => (
+              <DayEntry key={day} day={day} entries={entries} />
+            ))}
+            <MonthDelimiter month={month} year={year} />
+          </div>
+        ))}
+      {months.error && (
+        <Typography variant="body1" color="error">
+          {months.error.message}
+        </Typography>
+      )}
       {/* <Typography variant="h3">Heading3 48px</Typography>
       <Typography variant="h4">Heading4 34px</Typography>
       <Typography variant="h5">Heading5 24px</Typography>
