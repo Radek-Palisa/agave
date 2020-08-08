@@ -6,6 +6,14 @@ import { createMuiTheme } from '@material-ui/core/styles';
 // }
 
 const theme = createMuiTheme({
+  overrides: {
+    MuiDivider: {
+      root: {
+        borderColor: '#F4E7D3',
+        marginBottom: '1rem',
+      },
+    },
+  },
   palette: {
     background: {
       default: '#FFF6E8',

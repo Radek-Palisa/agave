@@ -1,5 +1,7 @@
 import React from 'react';
 import { Typography, makeStyles } from '@material-ui/core';
+import Markdown from './Markdown';
+import Divider from '@material-ui/core/Divider';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -7,16 +9,18 @@ const useStyles = makeStyles(theme => ({
   },
   entriesWrapper: {
     flexGrow: 1,
+    paddingRight: theme.spacing(2),
 
     '& > p:last-child': {
       borderBottom: 0,
     },
   },
   entry: {
-    marginRight: theme.spacing(2),
-    marginBottom: theme.spacing(2),
-    paddingBottom: theme.spacing(2),
-    borderBottom: '1px solid #F4E7D3',
+    marginBottom: '0.875rem',
+    // borderBottom: '1px solid #F4E7D3',
+  },
+  divider: {
+    marginBottom: '0.875rem',
   },
 }));
 
@@ -33,10 +37,11 @@ export default function DayEntry({ entries, day }: Props) {
         {day}
       </Typography>
       <div className={classes.entriesWrapper}>
-        {entries.map(entry => (
-          <Typography key={entry.id} className={classes.entry} variant="body2">
-            {entry.text}
-          </Typography>
+        {entries.map((entry, index) => (
+          <>
+            <Markdown className={classes.entry} key={entry.id} text={entry.text} />
+            {index !== entries.length - 1 && <Divider className={classes.divider} />}
+          </>
         ))}
       </div>
     </div>

@@ -4,7 +4,7 @@ import DayEntry from '../../components/DayEntry';
 import useGetEntriesOnMount from '../../services/useGetEntriesOnMount';
 import MonthDelimiter from '../../components/MonthDelimiter';
 import NavHeader from '../../components/NavHeader';
-import { Typography } from '@material-ui/core';
+import { Typography, Divider } from '@material-ui/core';
 
 export default function Home(props: RouteComponentProps) {
   const months = useGetEntriesOnMount();
@@ -19,7 +19,10 @@ export default function Home(props: RouteComponentProps) {
         months.data.map(({ month, year, days }) => (
           <div key={`${month}-${year}`}>
             {days.map(({ day, entries }: any) => (
-              <DayEntry key={day} day={day} entries={entries} />
+              <>
+                <DayEntry key={day} day={day} entries={entries} />
+                <Divider />
+              </>
             ))}
             <MonthDelimiter month={month} year={year} />
           </div>
