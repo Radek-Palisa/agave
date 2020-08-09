@@ -3,13 +3,14 @@ import './App.css';
 import { Router, Location } from '@reach/router';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import Home from './scenes/Home';
-import Detail from './scenes/Detail';
+import Detail from './scenes/Detail/Detail';
 import { ThemeProvider } from '@material-ui/core/styles';
 import theme from './theme';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import LoginPage from './scenes/LoginPage';
-import AddEntry from './scenes/AddEntry/AddEntry';
 import AuthProvider from './providers/AuthProvider';
+import EditEntry from './scenes/EditEntry';
+import AddEntry from './scenes/AddEntry';
 
 const FadeTransitionRouter = (props: any) => (
   <Location>
@@ -40,6 +41,7 @@ export default function App() {
             <Detail path="detail" />
             <LoginPage path="login" />
             <AddEntry path="add" />
+            <EditEntry path="edit" />
           </FadeTransitionRouter>
         </div>
       </AuthProvider>

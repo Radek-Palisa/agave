@@ -1,24 +1,29 @@
 import React, { useState } from 'react';
-import { RouteComponentProps, Link } from '@reach/router';
+import { Link } from '@reach/router';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import { makeStyles, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 import LoadingButton from '@material-ui/lab/LoadingButton';
 import NavHeader from '../../components/NavHeader';
-import store from '../../store';
 import Markdown from '../../components/Markdown';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import EditIcon from '@material-ui/icons/Edit';
 import VisibilityIcon from '@material-ui/icons/Visibility';
+import { PostEntryPayload, Entry } from '../../types';
+import ErrorText from '../../components/ErrorText';
+import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles(theme => ({
   root: {},
-  wrapper: {
+  section: {
     padding: theme.spacing(1),
+
+    '& > * + *': {
+      marginTop: theme.spacing(2),
+    },
   },
   wrapperInner: {
     height: '60vh',
-    marginBottom: theme.spacing(2),
   },
   toggleWrapper: {
     textAlign: 'right',
@@ -35,6 +40,10 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(2),
     ...theme.typography.body2,
   },
+  dateWrapper: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
   markdown: {
     padding: theme.spacing(2),
   },
@@ -43,36 +52,50 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function AddEntry({ navigate }: RouteComponentProps) {
+type Props = {
+  backLinkProps: {
+    to: string;
+    state?: Entry;
+  };
+  navTitle: string;
+  submitBtnText: string;
+  onSubmit: (payload: PostEntryPayload) => Promise<void>;
+  entryData?: Entry;
+};
+
+export default function Editor({
+  backLinkProps,
+  navTitle,
+  submitBtnText,
+  onSubmit,
+  entryData,
+}: Props) {
   const classes = useStyles();
   const [mode, setMode] = useState<'write' | 'preview'>('write');
-  const [text, setText] = useState('');
+  const [text, setText] = useState(entryData?.text || '');
+  const [date, setDate] = useState(entryData?.date.toISOString().substring(0, 10));
+  const [time, setTime] = useState(entryData?.date.toISOString().substring(11, 16));
   const [error, setError] = useState<Error | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
   function handleSubmit() {
     setSubmitting(true);
-    store
-      .addEntry({ text })
-      .then(() => {
-        navigate && navigate('/');
-      })
-      .catch(error => {
-        setSubmitting(false);
-        setError(error);
-      });
+    onSubmit({ text }).catch(error => {
+      setSubmitting(false);
+      setError(error);
+    });
   }
 
   return (
     <>
       <NavHeader>
-        <Link to="/">
+        <Link {...backLinkProps}>
           <ArrowBackIcon />
         </Link>
-        <span>Add Entry</span>
+        <span>{navTitle}</span>
         <span />
       </NavHeader>
-      <section className={classes.wrapper}>
+      <section className={classes.section}>
         <div className={classes.toggleWrapper}>
           <ToggleButtonGroup
             value={mode}
@@ -99,14 +122,30 @@ export default function AddEntry({ navigate }: RouteComponentProps) {
             <Markdown className={classes.markdown} text={text} />
           )}
         </div>
-        <LoadingButton fullWidth pending={submitting} variant="contained" onClick={handleSubmit}>
-          Submit
-        </LoadingButton>
-        {error && (
-          <Typography variant="caption" color="error">
-            {error?.message || 'ups something went wrong'}
-          </Typography>
+        {entryData?.date && (
+          <div className={classes.dateWrapper}>
+            <TextField
+              variant="outlined"
+              id="time"
+              label="Time"
+              type="time"
+              value={time}
+              onChange={e => setTime(e.target.value)}
+            />
+            <TextField
+              variant="outlined"
+              id="date"
+              label="Date"
+              type="date"
+              value={date}
+              onChange={e => setDate(e.target.value)}
+            />
+          </div>
         )}
+        <LoadingButton fullWidth pending={submitting} variant="contained" onClick={handleSubmit}>
+          {submitBtnText}
+        </LoadingButton>
+        {error && <ErrorText errorMessage={error?.message} />}
       </section>
     </>
   );

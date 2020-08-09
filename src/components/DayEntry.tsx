@@ -2,6 +2,7 @@ import React from 'react';
 import { Typography, makeStyles } from '@material-ui/core';
 import Markdown from './Markdown';
 import Divider from '@material-ui/core/Divider';
+import { Link } from '@reach/router';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -15,9 +16,12 @@ const useStyles = makeStyles(theme => ({
       borderBottom: 0,
     },
   },
+  entryLinkWrapper: {
+    color: 'initial',
+    textDecoration: 'initial',
+  },
   entry: {
     marginBottom: '0.875rem',
-    // borderBottom: '1px solid #F4E7D3',
   },
   divider: {
     marginBottom: '0.875rem',
@@ -38,10 +42,12 @@ export default function DayEntry({ entries, day }: Props) {
       </Typography>
       <div className={classes.entriesWrapper}>
         {entries.map((entry, index) => (
-          <>
-            <Markdown className={classes.entry} key={entry.id} text={entry.text} />
+          <React.Fragment key={entry.id}>
+            <Link to="detail" state={entry} className={classes.entryLinkWrapper}>
+              <Markdown className={classes.entry} text={entry.text} />
+            </Link>
             {index !== entries.length - 1 && <Divider className={classes.divider} />}
-          </>
+          </React.Fragment>
         ))}
       </div>
     </div>

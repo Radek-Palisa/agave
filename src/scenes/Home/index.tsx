@@ -7,7 +7,7 @@ import NavHeader from '../../components/NavHeader';
 import { Typography, Divider } from '@material-ui/core';
 
 export default function Home(props: RouteComponentProps) {
-  const months = useGetEntriesOnMount();
+  const monthEntries = useGetEntriesOnMount();
 
   return (
     <div className="page">
@@ -15,21 +15,21 @@ export default function Home(props: RouteComponentProps) {
         <Link to="login">Login</Link>
         <Link to="add">Add</Link>
       </NavHeader>
-      {months.data &&
-        months.data.map(({ month, year, days }) => (
+      {monthEntries.data &&
+        monthEntries.data.map(({ month, year, days }) => (
           <div key={`${month}-${year}`}>
-            {days.map(({ day, entries }: any) => (
-              <>
-                <DayEntry key={day} day={day} entries={entries} />
-                <Divider />
-              </>
+            {days.map(({ day, entries }, index) => (
+              <React.Fragment key={day}>
+                <DayEntry day={day} entries={entries} />
+                {index !== days.length - 1 && <Divider />}
+              </React.Fragment>
             ))}
             <MonthDelimiter month={month} year={year} />
           </div>
         ))}
-      {months.error && (
+      {monthEntries.error && (
         <Typography variant="body1" color="error">
-          {months.error.message}
+          {monthEntries.error.message}
         </Typography>
       )}
       {/* <Typography variant="h3">Heading3 48px</Typography>

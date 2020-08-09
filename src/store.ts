@@ -3,6 +3,7 @@ import 'firebase/analytics';
 import 'firebase/auth';
 import 'firebase/firestore';
 import { firestore } from 'firebase';
+import { MonthEntries, PostEntryPayload } from './types';
 
 const config = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -36,31 +37,32 @@ class Store {
 
   // signOut = () => this.auth.signOut();
 
-  // user = (uid?: string) => this.db.ref(`users/${uid}`);
-
-  addEntry = async ({ text }: { text: string }) => {
+  private getEntriesRef = () => {
     if (!this.auth?.currentUser?.uid) throw new Error('Unauthorized');
 
-    return this.db.collection('users').doc(this.auth.currentUser.uid).collection('entries').add({
+    return this.db.collection('users').doc(this.auth.currentUser.uid).collection('entries');
+  };
+
+  addEntry = async ({ text }: PostEntryPayload) => {
+    return this.getEntriesRef().add({
       text,
       timestamp: firestore.Timestamp.now(),
     });
   };
 
-  getEntries = async () => {
-    if (!this.auth?.currentUser?.uid) throw new Error('Unauthorized');
+  editEntry = async (payload: PostEntryPayload, entryId: string) => {
+    return this.getEntriesRef().doc(entryId).update(payload);
+  };
 
-    return this.db
-      .collection('users')
-      .doc(this.auth.currentUser.uid)
-      .collection('entries')
+  getEntries = async () => {
+    return this.getEntriesRef()
       .orderBy('timestamp', 'desc')
       .get()
       .then(docRef => {
         let yearMonthCount = '';
         let currentDay = 0;
 
-        const data: any = [];
+        const data: MonthEntries = [];
 
         docRef.forEach(doc => {
           const item = doc.data();
@@ -69,18 +71,22 @@ class Store {
           const year = date.getFullYear();
           const month = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(date);
 
+          const dataItem = {
+            text: item.text,
+            id: doc.id,
+            date,
+          };
+
           if (yearMonthCount === `${year}-${month}`) {
             const lastItem = data[data.length - 1];
 
             if (currentDay === day) {
-              lastItem.days[lastItem.days.length - 1].entries.push({
-                text: item.text,
-              });
+              lastItem.days[lastItem.days.length - 1].entries.push(dataItem);
             } else {
               currentDay = day;
               lastItem.days.push({
                 day,
-                entries: [{ text: item.text, id: doc.id }],
+                entries: [dataItem],
               });
             }
           } else {
@@ -93,12 +99,7 @@ class Store {
               days: [
                 {
                   day,
-                  entries: [
-                    {
-                      text: item.text,
-                      id: doc.id,
-                    },
-                  ],
+                  entries: [dataItem],
                 },
               ],
             });
