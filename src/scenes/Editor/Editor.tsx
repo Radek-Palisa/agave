@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from '@reach/router';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import { makeStyles } from '@material-ui/core';
-import LoadingButton from '@material-ui/lab/LoadingButton';
+import { makeStyles, Button } from '@material-ui/core';
 import NavHeader from '../../components/NavHeader';
 import Markdown from '../../components/Markdown';
 import ToggleButton from '@material-ui/lab/ToggleButton';
@@ -10,7 +9,6 @@ import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import EditIcon from '@material-ui/icons/Edit';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import { PostEntryPayload, Entry } from '../../types';
-import ErrorText from '../../components/ErrorText';
 import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles(theme => ({
@@ -59,7 +57,8 @@ type Props = {
   };
   navTitle: string;
   submitBtnText: string;
-  onSubmit: (payload: PostEntryPayload) => Promise<void>;
+  // onSubmit: (payload: PostEntryPayload) => Promise<void>;
+  onSubmit: (payload: PostEntryPayload) => void;
   entryData?: Entry;
 };
 
@@ -75,16 +74,8 @@ export default function Editor({
   const [text, setText] = useState(entryData?.text || '');
   const [date, setDate] = useState(entryData?.date.toISOString().substring(0, 10));
   const [time, setTime] = useState(entryData?.date.toISOString().substring(11, 16));
-  const [error, setError] = useState<Error | null>(null);
-  const [submitting, setSubmitting] = useState(false);
 
-  function handleSubmit() {
-    setSubmitting(true);
-    onSubmit({ text }).catch(error => {
-      setSubmitting(false);
-      setError(error);
-    });
-  }
+  const handleSubmit = () => onSubmit({ text });
 
   return (
     <>
@@ -142,10 +133,9 @@ export default function Editor({
             />
           </div>
         )}
-        <LoadingButton fullWidth pending={submitting} variant="contained" onClick={handleSubmit}>
+        <Button fullWidth variant="contained" onClick={handleSubmit}>
           {submitBtnText}
-        </LoadingButton>
-        {error && <ErrorText errorMessage={error?.message} />}
+        </Button>
       </section>
     </>
   );

@@ -13,9 +13,15 @@ type Props = RouteComponentProps<{
 
 export default function EditEntry({ location, navigate }: Props) {
   function handleSubmit(payload: PostEntryPayload) {
-    return store.editEntry(payload, location?.state.id || '').then(() => {
-      navigate && navigate('/detail', { state: location?.state });
-    });
+    store.editEntry(payload, location?.state.id || '');
+    navigate &&
+      navigate('/detail', {
+        state: {
+          text: payload.text,
+          id: location?.state.id,
+          date: location?.state.date,
+        },
+      });
   }
 
   if (!location?.state) {

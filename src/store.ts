@@ -28,6 +28,10 @@ class Store {
     this.auth = app.auth();
     this.db = app.firestore();
 
+    this.db.enablePersistence().catch(error => {
+      console.log(error);
+    });
+
     // firebase.auth().onAuthStateChanged(user => { });
     // firebase.messaging().requestPermission().then(() => { });
     // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });

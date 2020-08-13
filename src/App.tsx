@@ -11,6 +11,8 @@ import LoginPage from './scenes/LoginPage';
 import AuthProvider from './providers/AuthProvider';
 import EditEntry from './scenes/EditEntry';
 import AddEntry from './scenes/AddEntry';
+import ErrorProvider from './providers/ErrorProvider';
+import ErrorModal from './scenes/ErrorModal';
 
 const FadeTransitionRouter = (props: any) => (
   <Location>
@@ -35,15 +37,18 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <AuthProvider>
-        <div className="app">
-          <FadeTransitionRouter>
-            <Home path="/" />
-            <Detail path="detail" />
-            <LoginPage path="login" />
-            <AddEntry path="add" />
-            <EditEntry path="edit" />
-          </FadeTransitionRouter>
-        </div>
+        <ErrorProvider>
+          <div className="app">
+            <FadeTransitionRouter>
+              <Home path="/" />
+              <Detail path="detail" />
+              <LoginPage path="login" />
+              <AddEntry path="add" />
+              <EditEntry path="edit" />
+            </FadeTransitionRouter>
+          </div>
+          <ErrorModal />
+        </ErrorProvider>
       </AuthProvider>
     </ThemeProvider>
   );

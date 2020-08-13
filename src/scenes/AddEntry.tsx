@@ -6,9 +6,8 @@ import { PostEntryPayload } from '../types';
 
 export default function AddEntry({ navigate }: RouteComponentProps) {
   function handleSubmit(payload: PostEntryPayload) {
-    return store.addEntry(payload).then(() => {
-      navigate && navigate('/');
-    });
+    store.addEntry(payload);
+    navigate && navigate('/');
   }
 
   return (
