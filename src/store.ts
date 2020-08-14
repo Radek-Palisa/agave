@@ -86,6 +86,10 @@ class Store {
     return this.getEntriesRef().doc(entryId).update(payload);
   };
 
+  deleteEntry = async (entryId: string) => {
+    return this.getEntriesRef().doc(entryId).delete();
+  };
+
   getEntries = async () => {
     return this.getEntriesRef()
       .orderBy('timestamp', 'desc')

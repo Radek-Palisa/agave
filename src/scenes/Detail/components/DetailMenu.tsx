@@ -4,7 +4,8 @@ import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Entry } from '../../../types';
-import { Link } from '@reach/router';
+import { Link, navigate } from '@reach/router';
+import store from '../../../store';
 
 type Props = {
   itemData?: Entry;
@@ -20,6 +21,14 @@ export function DetailMenu({ itemData }: Props) {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleDelete = () => {
+    if (!itemData?.id) {
+      throw new Error('missing entry id');
+    }
+    store.deleteEntry(itemData?.id);
+    navigate('/');
   };
 
   return (
@@ -50,7 +59,7 @@ export function DetailMenu({ itemData }: Props) {
             Edit
           </Link>
         </MenuItem>
-        <MenuItem onClick={handleClose}>Delete</MenuItem>
+        <MenuItem onClick={handleDelete}>Delete</MenuItem>
       </Menu>
     </div>
   );
