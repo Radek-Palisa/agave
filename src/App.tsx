@@ -13,6 +13,7 @@ import EditEntry from './scenes/EditEntry';
 import AddEntry from './scenes/AddEntry';
 import ErrorProvider from './providers/ErrorProvider';
 import ErrorModal from './scenes/ErrorModal';
+import useRestoreFromBackup from './services/useRestoreFromBackup';
 
 const FadeTransitionRouter = (props: any) => (
   <Location>
@@ -33,6 +34,8 @@ const FadeTransitionRouter = (props: any) => (
 );
 
 export default function App() {
+  useRestoreFromBackup();
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />

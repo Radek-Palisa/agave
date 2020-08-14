@@ -1,8 +1,9 @@
 import React, { createContext, useState, useContext } from 'react';
 
 type ErrorContextState = {
-  title: string;
-  message: string;
+  title?: string;
+  message?: string;
+  additionalInfo?: string;
 } | null;
 
 const ErrorContext = createContext<

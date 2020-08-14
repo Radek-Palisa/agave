@@ -19,6 +19,7 @@ const useStyles = makeStyles(theme => ({
   entryLinkWrapper: {
     color: 'initial',
     textDecoration: 'initial',
+    '-webkit-tap-highlight-color': 'transparent',
   },
   entry: {
     marginBottom: '0.875rem',

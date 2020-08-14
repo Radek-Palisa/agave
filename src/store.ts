@@ -41,6 +41,34 @@ class Store {
 
   // signOut = () => this.auth.signOut();
 
+  get backup() {
+    const item = window.localStorage.getItem('entryBackup');
+    if (!item) return null;
+    const parsed = JSON.parse(item);
+    const { date, ...rest } = parsed;
+    const validatedDate = new Date(date);
+
+    if (
+      validatedDate instanceof Date &&
+      // @ts-ignore
+      !isNaN(validatedDate)
+    ) {
+      rest.date = validatedDate;
+    }
+
+    return rest;
+  }
+
+  set backup(entry: any) {
+    // make async
+    setTimeout(() => {
+      if (!entry) {
+        return window.localStorage.removeItem('entryBackup');
+      }
+      window.localStorage.setItem('entryBackup', JSON.stringify(entry));
+    }, 0);
+  }
+
   private getEntriesRef = () => {
     if (!this.auth?.currentUser?.uid) throw new Error('Unauthorized');
 

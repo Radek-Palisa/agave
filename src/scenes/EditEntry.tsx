@@ -4,6 +4,7 @@ import Editor from './Editor/Editor';
 import store from '../store';
 import { PostEntryPayload, Entry } from '../types';
 import ErrorText from '../components/ErrorText';
+import { useError } from '../providers/ErrorProvider';
 
 type Props = RouteComponentProps<{
   location: {
@@ -12,8 +13,15 @@ type Props = RouteComponentProps<{
 }>;
 
 export default function EditEntry({ location, navigate }: Props) {
+  const [, setError] = useError();
+
   function handleSubmit(payload: PostEntryPayload) {
-    store.editEntry(payload, location?.state.id || '');
+    store.editEntry(payload, location?.state.id || '').catch(error => {
+      setError({
+        message: `There's been a problem while saving the entry.`,
+        additionalInfo: error.message,
+      });
+    });
     navigate &&
       navigate('/detail', {
         state: {
