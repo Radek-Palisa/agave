@@ -3,6 +3,13 @@ import { makeStyles, Typography } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   root: {
+    position: 'sticky',
+    fallbacks: [
+      {
+        display: '-webkit-sticky',
+      },
+    ],
+    top: 0,
     display: 'flex',
     justifyContent: 'space-between',
     padding: theme.spacing(0.5, 1),

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, MouseEvent } from 'react';
 import { Link, navigate } from '@reach/router';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import {
@@ -81,7 +81,6 @@ export default function Editor({
   onUnmount,
 }: Props) {
   const classes = useStyles();
-  const [hasExitConfirmed, setHasExitConfirmed] = useState<boolean>(false);
   const [showExitModal, setShotExitmodal] = useState<boolean>(false);
   const [mode, setMode] = useState<'write' | 'preview'>('write');
   const [text, setText] = useState(entryData?.text || '');
@@ -95,11 +94,15 @@ export default function Editor({
     return onSubmit({ text });
   };
 
-  const handleBackButton = (e: any) => {
-    if (hasExitConfirmed) return;
-
+  const handleBackButton = (e: MouseEvent) => {
     e.preventDefault();
     setShotExitmodal(true);
+  };
+
+  const handleExitConfirmation = () => {
+    store.backup = null;
+    handleCloseExitModal();
+    navigate(backLinkProps.to, backLinkProps);
   };
 
   const handleCloseExitModal = () => setShotExitmodal(false);
@@ -192,14 +195,7 @@ export default function Editor({
         </DialogTitle>
         <Typography align="center">You are leaving unsaved data behind.</Typography>
         <DialogActions>
-          <Button
-            onClick={() => {
-              handleCloseExitModal();
-              navigate(backLinkProps.to, backLinkProps);
-            }}
-          >
-            Leave anyway
-          </Button>
+          <Button onClick={handleExitConfirmation}>Leave anyway</Button>
           <Button onClick={handleCloseExitModal}>Stay</Button>
         </DialogActions>
       </Dialog>

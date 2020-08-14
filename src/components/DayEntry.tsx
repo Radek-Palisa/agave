@@ -8,6 +8,9 @@ const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
   },
+  day: {
+    minWidth: '4rem',
+  },
   entriesWrapper: {
     flexGrow: 1,
     paddingRight: theme.spacing(2),
@@ -38,7 +41,7 @@ export default function DayEntry({ entries, day }: Props) {
   const classes = useStyles();
   return (
     <div className={classes.root}>
-      <Typography style={{ minWidth: '50px' }} variant="h6" align="center" component="h3">
+      <Typography className={classes.day} variant="h6" align="center" component="h3">
         {day}
       </Typography>
       <div className={classes.entriesWrapper}>

@@ -18,13 +18,13 @@ export default function Home(props: RouteComponentProps) {
       {monthEntries.data &&
         monthEntries.data.map(({ month, year, days }) => (
           <div key={`${month}-${year}`}>
+            <MonthDelimiter month={month} year={year} />
             {days.map(({ day, entries }, index) => (
               <React.Fragment key={day}>
                 <DayEntry day={day} entries={entries} />
                 {index !== days.length - 1 && <Divider />}
               </React.Fragment>
             ))}
-            <MonthDelimiter month={month} year={year} />
           </div>
         ))}
       {monthEntries.error && (
