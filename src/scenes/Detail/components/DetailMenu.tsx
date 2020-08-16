@@ -6,6 +6,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { Entry } from '../../../types';
 import { Link, navigate } from '@reach/router';
 import store from '../../../store';
+import { ROUTES } from '../../../consts';
 
 type Props = {
   itemData?: Entry;
@@ -41,21 +42,9 @@ export function DetailMenu({ itemData }: Props) {
       >
         <MoreVertIcon />
       </IconButton>
-      <Menu
-        id="detail-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={open}
-        onClose={handleClose}
-        // PaperProps={{
-        //   style: {
-        //     maxHeight: ITEM_HEIGHT * 4.5,
-        //     width: '20ch',
-        //   },
-        // }}
-      >
+      <Menu id="detail-menu" anchorEl={anchorEl} keepMounted open={open} onClose={handleClose}>
         <MenuItem onClick={handleClose}>
-          <Link to="/edit" state={itemData}>
+          <Link to={ROUTES.EDIT_ENTRY} state={itemData}>
             Edit
           </Link>
         </MenuItem>

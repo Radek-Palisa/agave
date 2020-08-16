@@ -14,6 +14,9 @@ import AddEntry from './scenes/AddEntry';
 import ErrorProvider from './providers/ErrorProvider';
 import ErrorModal from './scenes/ErrorModal';
 import useRestoreFromBackup from './services/useRestoreFromBackup';
+import { ROUTES } from './consts';
+import Settings from './scenes/Settings/Settings';
+import TagEditor from './scenes/TagEditor/TagEditor';
 
 const FadeTransitionRouter = (props: any) => (
   <Location>
@@ -43,11 +46,13 @@ export default function App() {
         <ErrorProvider>
           <div className="app">
             <FadeTransitionRouter>
-              <Home path="/" />
-              <Detail path="detail" />
-              <LoginPage path="login" />
+              <Home path={ROUTES.HOME} />
+              <Detail path={ROUTES.DETAIL} />
+              <LoginPage path={ROUTES.LOGIN} />
               <AddEntry path="add" />
               <EditEntry path="edit" />
+              <Settings path={ROUTES.SETTINGS} />
+              <TagEditor path={ROUTES.TAGS} />
             </FadeTransitionRouter>
           </div>
           <ErrorModal />

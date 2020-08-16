@@ -27,7 +27,8 @@ export default function EditEntry({ location, navigate }: Props) {
         state: {
           text: payload.text,
           id: location?.state.id,
-          date: location?.state.date,
+          date: payload.date,
+          tags: payload.tags,
         },
       });
   }

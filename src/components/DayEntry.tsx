@@ -3,6 +3,8 @@ import { Typography, makeStyles } from '@material-ui/core';
 import Markdown from './Markdown';
 import Divider from '@material-ui/core/Divider';
 import { Link } from '@reach/router';
+import { Entry } from '../types';
+import { ROUTES } from '../consts';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -33,7 +35,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 type Props = {
-  entries: Array<{ text: string; id: string }>;
+  entries: Array<Entry>;
   day: number;
 };
 
@@ -47,7 +49,7 @@ export default function DayEntry({ entries, day }: Props) {
       <div className={classes.entriesWrapper}>
         {entries.map((entry, index) => (
           <React.Fragment key={entry.id}>
-            <Link to="detail" state={entry} className={classes.entryLinkWrapper}>
+            <Link to={ROUTES.DETAIL} state={entry} className={classes.entryLinkWrapper}>
               <Markdown className={classes.entry} text={entry.text} />
             </Link>
             {index !== entries.length - 1 && <Divider className={classes.divider} />}

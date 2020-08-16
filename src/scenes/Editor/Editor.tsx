@@ -1,27 +1,22 @@
-import React, { useState, useEffect, MouseEvent } from 'react';
-import { Link, navigate } from '@reach/router';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import {
-  makeStyles,
-  Button,
-  Dialog,
-  DialogTitle,
-  Typography,
-  DialogActions,
-} from '@material-ui/core';
+import React, { useState, useEffect } from 'react';
+import { navigate } from '@reach/router';
+import { makeStyles, Button, Chip } from '@material-ui/core';
 import NavHeader from '../../components/NavHeader';
 import Markdown from '../../components/Markdown';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import EditIcon from '@material-ui/icons/Edit';
 import VisibilityIcon from '@material-ui/icons/Visibility';
+import DoneIcon from '@material-ui/icons/Done';
 import { PostEntryPayload, Entry } from '../../types';
 import TextField from '@material-ui/core/TextField';
 import useDebounce from '../../services/useDebounce';
 import store from '../../store';
+import BackButton from '../../components/BackButton';
+import Modal from '../../components/Modal';
+import useGetSortedTags from './services/useGetSortedTags';
 
 const useStyles = makeStyles(theme => ({
-  root: {},
   section: {
     padding: theme.spacing(1),
 
@@ -35,6 +30,20 @@ const useStyles = makeStyles(theme => ({
   toggleWrapper: {
     textAlign: 'right',
     marginBottom: theme.spacing(2),
+  },
+  tags: {
+    height: 32,
+    display: 'flex',
+    overflow: 'scroll',
+    marginBottom: theme.spacing(3),
+
+    '&::-webkit-scrollbar': {
+      display: 'none',
+    },
+
+    '& > * + *': {
+      marginLeft: theme.spacing(1),
+    },
   },
   textarea: {
     display: 'block',
@@ -66,9 +75,7 @@ type Props = {
   };
   navTitle: string;
   submitBtnText: string;
-  // onSubmit: (payload: PostEntryPayload) => Promise<void>;
   onSubmit: (payload: PostEntryPayload) => void;
-  onUnmount?: (data: any) => void;
   entryData?: Partial<Entry>;
 };
 
@@ -78,24 +85,39 @@ export default function Editor({
   submitBtnText,
   onSubmit,
   entryData,
-  onUnmount,
 }: Props) {
   const classes = useStyles();
   const [showExitModal, setShotExitmodal] = useState<boolean>(false);
+  const { data: tagsData } = useGetSortedTags(entryData?.tags);
   const [mode, setMode] = useState<'write' | 'preview'>('write');
   const [text, setText] = useState(entryData?.text || '');
   const [date, setDate] = useState(entryData?.date?.toISOString().substring(0, 10));
   const [time, setTime] = useState(entryData?.date?.toISOString().substring(11, 16));
+  const [tags, setTags] = useState<{ [tagId: string]: boolean }>(
+    entryData?.tags
+      ? entryData.tags.reduce<{ [key: string]: boolean }>((acc, val) => {
+          acc[val] = true;
+          return acc;
+        }, {})
+      : {}
+  );
 
   const debouncedText = useDebounce(text, 500);
 
+  const handleSetTag = (itemId: string) =>
+    setTags(prev => ({
+      ...prev,
+      [itemId]: !prev[itemId],
+    }));
+
   const handleSubmit = () => {
     store.backup = null;
-    return onSubmit({ text });
+    const filteredTags = Object.keys(tags).filter(i => tags[i]);
+
+    return onSubmit({ text, tags: filteredTags, date: new Date(`${date}T${time}`) });
   };
 
-  const handleBackButton = (e: MouseEvent) => {
-    e.preventDefault();
+  const handleBackButton = (next: () => void) => {
     setShotExitmodal(true);
   };
 
@@ -113,15 +135,14 @@ export default function Editor({
       text: debouncedText,
       date: `${date}T${time}`,
       pathname: window.location.pathname,
+      tags: Object.keys(tags).filter(i => tags[i]),
     };
-  }, [debouncedText, time, date]);
+  }, [debouncedText, time, date, tags]);
 
   return (
     <>
       <NavHeader>
-        <Link {...backLinkProps} onClick={handleBackButton}>
-          <ArrowBackIcon />
-        </Link>
+        <BackButton {...backLinkProps} onClick={handleBackButton} />
         <span>{navTitle}</span>
         <span />
       </NavHeader>
@@ -152,6 +173,18 @@ export default function Editor({
             <Markdown className={classes.markdown} text={text} />
           )}
         </div>
+        <div className={classes.tags}>
+          {tagsData?.map(item => (
+            <Chip
+              key={item.id}
+              onClick={() => handleSetTag(item.id)}
+              // onDelete={tags[item.id] ? () => handleSetTag(item.id) : undefined}
+              color={tags[item.id] ? 'primary' : undefined}
+              label={item.label}
+              // deleteIcon={tags[item.id] ? <DoneIcon /> : undefined}
+            />
+          ))}
+        </div>
         {entryData?.date && (
           <div className={classes.dateWrapper}>
             <TextField
@@ -176,29 +209,19 @@ export default function Editor({
           {submitBtnText}
         </Button>
       </section>
-      <Dialog
+      <Modal
         open={showExitModal}
         onClose={handleCloseExitModal}
-        fullWidth
-        aria-labelledby="simple-dialog-title"
-        aria-describedby="simple-modal-description"
-      >
-        <DialogTitle disableTypography className={classes.root}>
-          <Typography align="center" component="h2" id="simple-dialog-title">
-            <br />
-            {/* <HighlightOffIcon fontSize="large" /> */}
-            <br />
-            Wait a second!
-            <br />
-            <br />
-          </Typography>
-        </DialogTitle>
-        <Typography align="center">You are leaving unsaved data behind.</Typography>
-        <DialogActions>
-          <Button onClick={handleExitConfirmation}>Leave anyway</Button>
-          <Button onClick={handleCloseExitModal}>Stay</Button>
-        </DialogActions>
-      </Dialog>
+        title="Wait a second!"
+        description="You are leaving unsaved data behind."
+        icon={<>icon</>}
+        actions={
+          <>
+            <Button onClick={handleExitConfirmation}>Leave anyway</Button>
+            <Button onClick={handleCloseExitModal}>Stay</Button>
+          </>
+        }
+      />
     </>
   );
 }

@@ -5,14 +5,15 @@ import useGetEntriesOnMount from '../../services/useGetEntriesOnMount';
 import MonthDelimiter from '../../components/MonthDelimiter';
 import NavHeader from '../../components/NavHeader';
 import { Typography, Divider } from '@material-ui/core';
+import { ROUTES } from '../../consts';
 
 export default function Home(props: RouteComponentProps) {
   const monthEntries = useGetEntriesOnMount();
-
   return (
     <div className="page">
       <NavHeader>
-        <Link to="login">Login</Link>
+        <Link to={ROUTES.LOGIN}>Login</Link>
+        <Link to={ROUTES.SETTINGS}>Settings</Link>
         <Link to="add">Add</Link>
       </NavHeader>
       {monthEntries.data &&

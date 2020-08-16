@@ -3,7 +3,7 @@ import 'firebase/analytics';
 import 'firebase/auth';
 import 'firebase/firestore';
 import { firestore } from 'firebase';
-import { MonthEntries, PostEntryPayload } from './types';
+import { MonthEntries, PostEntryPayload, Tag } from './types';
 
 const config = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -75,15 +75,20 @@ class Store {
     return this.db.collection('users').doc(this.auth.currentUser.uid).collection('entries');
   };
 
-  addEntry = async ({ text }: PostEntryPayload) => {
+  addEntry = async ({ date, ...payload }: PostEntryPayload) => {
     return this.getEntriesRef().add({
-      text,
+      ...payload,
       timestamp: firestore.Timestamp.now(),
     });
   };
 
-  editEntry = async (payload: PostEntryPayload, entryId: string) => {
-    return this.getEntriesRef().doc(entryId).update(payload);
+  editEntry = async ({ date, ...payload }: PostEntryPayload, entryId: string) => {
+    return this.getEntriesRef()
+      .doc(entryId)
+      .update({
+        ...payload,
+        timestamp: firestore.Timestamp.fromDate(date),
+      });
   };
 
   deleteEntry = async (entryId: string) => {
@@ -111,6 +116,7 @@ class Store {
             text: item.text,
             id: doc.id,
             date,
+            tags: item.tags,
           };
 
           if (yearMonthCount === `${year}-${month}`) {
@@ -144,6 +150,63 @@ class Store {
 
         return data;
       });
+  };
+
+  private getUserSettingsRef = () => {
+    if (!this.auth?.currentUser?.uid) throw new Error('Unauthorized');
+
+    return this.db.collection('users').doc(this.auth.currentUser.uid).collection('settings');
+  };
+
+  private getUserTagsRef = () => {
+    if (!this.auth?.currentUser?.uid) throw new Error('Unauthorized');
+
+    return this.db.collection('users').doc(this.auth.currentUser.uid).collection('tags');
+  };
+
+  getUserTags = (): Promise<Tag[]> => {
+    return this.getUserTagsRef()
+      .get()
+      .then(res =>
+        res.docs.map(
+          doc =>
+            ({
+              id: doc.id,
+              ...doc.data(),
+            } as Tag)
+        )
+      );
+  };
+
+  subscribeUserTags = (callback: (error: Error | null, data?: any) => void) => {
+    return this.getUserTagsRef()
+      .orderBy('timestamp', 'asc')
+      .onSnapshot(res => {
+        const data = res.docs.map(
+          doc =>
+            ({
+              id: doc.id,
+              ...doc.data(),
+            } as Tag)
+        );
+        callback(null, data);
+      }, callback);
+  };
+
+  editUserTag = async ({ id, label }: Tag) => {
+    return this.getUserTagsRef().doc(id).update({ label });
+  };
+
+  addUserTag = async () => {
+    return this.getUserTagsRef()
+      .add({
+        timestamp: firestore.Timestamp.now(),
+      })
+      .then(docRef => docRef.id);
+  };
+
+  deleteUserTag = async (tagId: string) => {
+    return this.getUserTagsRef().doc(tagId).delete();
   };
 }
 
