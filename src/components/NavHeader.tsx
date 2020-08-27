@@ -9,7 +9,7 @@ const useStyles = makeStyles<Theme, { noMargin?: boolean }>(theme => ({
     height: 60,
     padding: theme.spacing(1, 2),
     marginBottom: ({ noMargin }) => (noMargin ? 0 : theme.spacing(2)),
-    backgroundColor: '#F4E7D3',
+    backgroundColor: theme.palette.secondary.main,
     boxShadow: '0 2px 4px rgba(0, 0, 0, .13)',
   },
 }));

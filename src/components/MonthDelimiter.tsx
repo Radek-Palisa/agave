@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -13,13 +13,12 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'space-between',
     padding: theme.spacing(0.5, 1, 0.5, 0),
-    marginBottom: theme.spacing(1),
-    backgroundColor: '#F4E7D3',
+    backgroundColor: theme.palette.secondary.main,
     fontSize: 10,
     textTransform: 'lowercase',
     fontFamily: 'Montserrat',
     letterSpacing: 0.5,
-    fontWeight: 700,
+    fontWeight: theme.typography.fontWeightBold,
     color: '#A1988A',
   },
   month: {

@@ -8,11 +8,12 @@ import TuneIcon from '@material-ui/icons/Tune';
 import AddBoxOutlinedIcon from '@material-ui/icons/AddBoxOutlined';
 import { makeStyles } from '@material-ui/core';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   root: {
-    backgroundColor: '#F4E7D3',
+    backgroundColor: theme.palette.secondary.main,
   },
-});
+}));
+
 export default function BottomNav() {
   const classes = useStyles();
   const [value, setValue] = React.useState<string>(ROUTES.HOME);

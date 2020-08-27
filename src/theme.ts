@@ -27,6 +27,9 @@ const theme = createMuiTheme({
     primary: {
       main: purple[500],
     },
+    secondary: {
+      main: '#F4E7D3',
+    },
     background: {
       default: '#FFF6E8',
     },
@@ -42,7 +45,8 @@ const theme = createMuiTheme({
     fontFamily: 'Raleway, Helvetica Neue, Arial, sans-serif',
     fontSize: 16,
     fontWeightRegular: 500,
-    fontWeightBold: 600,
+    fontWeightMedium: 600,
+    fontWeightBold: 700,
     h1: {
       fontSize: '6.0625rem',
       letterSpacing: '-0.01546em',

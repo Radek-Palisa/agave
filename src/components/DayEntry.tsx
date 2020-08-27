@@ -9,6 +9,8 @@ import { ROUTES } from '../consts';
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
+    marginTop: theme.spacing(3),
+    paddingBottom: theme.spacing(1),
   },
   day: {
     minWidth: '4rem',
