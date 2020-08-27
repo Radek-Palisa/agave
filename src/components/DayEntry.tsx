@@ -22,7 +22,8 @@ const useStyles = makeStyles(theme => ({
     },
   },
   entryLinkWrapper: {
-    color: 'initial',
+    // color: 'initial',
+    color: 'inherit',
     textDecoration: 'initial',
     '-webkit-tap-highlight-color': 'transparent',
   },
@@ -50,7 +51,7 @@ export default function DayEntry({ entries, day }: Props) {
         {entries.map((entry, index) => (
           <React.Fragment key={entry.id}>
             <Link to={ROUTES.DETAIL} state={entry} className={classes.entryLinkWrapper}>
-              <Markdown className={classes.entry} text={entry.text} />
+              <Markdown id={entry.id} className={classes.entry} text={entry.text} />
             </Link>
             {index !== entries.length - 1 && <Divider className={classes.divider} />}
           </React.Fragment>

@@ -1,51 +1,138 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { RouteComponentProps, Link } from '@reach/router';
 import DayEntry from '../../components/DayEntry';
 import useGetEntriesOnMount from '../../services/useGetEntriesOnMount';
 import MonthDelimiter from '../../components/MonthDelimiter';
 import NavHeader from '../../components/NavHeader';
-import { Typography, Divider } from '@material-ui/core';
+import { Divider, makeStyles } from '@material-ui/core';
 import { ROUTES } from '../../consts';
+import ErrorText from '../../components/ErrorText';
+import Logo from '../../components/Logo';
 
-export default function Home(props: RouteComponentProps) {
+type Props = RouteComponentProps<{
+  location: {
+    state?: {
+      id: string;
+    };
+  };
+}>;
+
+const useStyles = makeStyles({
+  entriesRoot: {
+    overflow: 'scroll',
+    height: 'calc(100vh - 60px - 56px)',
+  },
+});
+
+export default function Home({ location }: Props) {
+  const classes = useStyles();
   const monthEntries = useGetEntriesOnMount();
+  const locationState = location?.state;
+
+  useEffect(() => {
+    if (monthEntries.data && locationState?.id) {
+      const element = document.getElementById(locationState.id);
+      element?.scrollIntoView();
+    }
+  }, [monthEntries, locationState]);
+
   return (
     <div className="page">
-      <NavHeader>
-        <Link to={ROUTES.LOGIN}>Login</Link>
-        <Link to={ROUTES.SETTINGS}>Settings</Link>
-        <Link to="add">Add</Link>
+      <NavHeader noMargin>
+        <Logo />
       </NavHeader>
-      {monthEntries.data &&
-        monthEntries.data.map(({ month, year, days }) => (
-          <div key={`${month}-${year}`}>
-            <MonthDelimiter month={month} year={year} />
-            {days.map(({ day, entries }, index) => (
-              <React.Fragment key={day}>
-                <DayEntry day={day} entries={entries} />
-                {index !== days.length - 1 && <Divider />}
-              </React.Fragment>
-            ))}
+      <div className={classes.entriesRoot}>
+        {/* <div key={`upsala`} style={{ paddingTop: 16 }}>
+          <div style={{ fontFamily: 'Raleway', fontWeight: 500, fontSize: 16 }}>
+            <DayEntry
+              day={3}
+              entries={[
+                {
+                  id: '0',
+                  text:
+                    'Rekordní množství pozitivních testů na covid-19 se v pátek ukázal především u lidí mladší a střední generace. Většina z nich navíc ani nevykazuje příznaky nemoci. V Praze, kde je hlášeno nejvíc nových případů, jsou stále nízké počty nakažených mezi rizikovými osobami, tedy zejména seniory. V sobotu na to v České televizi upozornila hlavní hygienička Jarmila Rážová.',
+                  date: new Date(),
+                  tags: [],
+                },
+              ]}
+            />
           </div>
-        ))}
-      {monthEntries.error && (
-        <Typography variant="body1" color="error">
-          {monthEntries.error.message}
-        </Typography>
-      )}
-      {/* <Typography variant="h3">Heading3 48px</Typography>
-      <Typography variant="h4">Heading4 34px</Typography>
-      <Typography variant="h5">Heading5 24px</Typography>
-      <Typography variant="h6">Heading6 20px</Typography>
-      <Typography variant="subtitle1">Subtitle1 16px</Typography>
-      <Typography variant="subtitle2">Subtitle2 14px</Typography>
-      <Typography variant="body1">body1 16px</Typography>
-      <Typography variant="body2">body2 14px</Typography>
-      <Typography variant="button">Button 14px</Typography>
-      <br />
-      <Typography variant="caption">Caption 12px</Typography>
-      <br />
-      <Typography variant="overline">Overline 10px</Typography> */}
+          <Divider />
+          <div style={{ fontFamily: 'Montserrat', fontWeight: 500 }}>
+            <DayEntry
+              day={3}
+              entries={[
+                {
+                  id: '0',
+                  text:
+                    'Rekordní množství pozitivních testů na covid-19 se v pátek ukázal především u lidí mladší a střední generace. Většina z nich navíc ani nevykazuje příznaky nemoci. V Praze, kde je hlášeno nejvíc nových případů, jsou stále nízké počty nakažených mezi rizikovými osobami, tedy zejména seniory. V sobotu na to v České televizi upozornila hlavní hygienička Jarmila Rážová.',
+                  date: new Date(),
+                  tags: [],
+                },
+              ]}
+            />
+          </div>
+          <Divider />
+          <div style={{ fontFamily: 'Cabin', fontSize: 17, letterSpacing: 'normal' }}>
+            <DayEntry
+              day={3}
+              entries={[
+                {
+                  id: '0',
+                  text:
+                    'Rekordní množství pozitivních testů na covid-19 se v pátek ukázal především u lidí mladší a střední generace. Většina z nich navíc ani nevykazuje příznaky nemoci. V Praze, kde je hlášeno nejvíc nových případů, jsou stále nízké počty nakažených mezi rizikovými osobami, tedy zejména seniory. V sobotu na to v České televizi upozornila hlavní hygienička Jarmila Rážová.',
+                  date: new Date(),
+                  tags: [],
+                },
+              ]}
+            />
+          </div>
+          <Divider />
+          <div style={{ fontFamily: 'Noto Sans', fontSize: 16 }}>
+            <DayEntry
+              day={3}
+              entries={[
+                {
+                  id: '0',
+                  text:
+                    'Rekordní množství pozitivních testů na covid-19 se v pátek ukázal především u lidí mladší a střední generace. Většina z nich navíc ani nevykazuje příznaky nemoci. V Praze, kde je hlášeno nejvíc nových případů, jsou stále nízké počty nakažených mezi rizikovými osobami, tedy zejména seniory. V sobotu na to v České televizi upozornila hlavní hygienička Jarmila Rážová.',
+                  date: new Date(),
+                  tags: [],
+                },
+              ]}
+            />
+          </div>
+          <Divider />
+          <div style={{ fontFamily: 'Libre Baskerville', fontSize: 15, lineHeight: 1.6 }}>
+            <DayEntry
+              day={3}
+              entries={[
+                {
+                  id: '0',
+                  text:
+                    'Rekordní množství pozitivních testů na covid-19 se v pátek ukázal především u lidí mladší a střední generace. Většina z nich navíc ani nevykazuje příznaky nemoci. V Praze, kde je hlášeno nejvíc nových případů, jsou stále nízké počty nakažených mezi rizikovými osobami, tedy zejména seniory. V sobotu na to v České televizi upozornila hlavní hygienička Jarmila Rážová.',
+                  date: new Date(),
+                  tags: [],
+                },
+              ]}
+            />
+          </div>
+          <Divider />
+        </div> */}
+        {monthEntries.data &&
+          monthEntries.data.map(({ month, year, days }) => (
+            <div key={`${month}-${year}`}>
+              <MonthDelimiter month={month} year={year} />
+              {days.map(({ day, entries }, index) => (
+                <React.Fragment key={day}>
+                  <DayEntry day={day} entries={entries} />
+                  {index !== days.length - 1 && <Divider />}
+                </React.Fragment>
+              ))}
+            </div>
+          ))}
+        {monthEntries.error && <ErrorText errorMessage={monthEntries.error.message} />}
+      </div>
     </div>
   );
 }

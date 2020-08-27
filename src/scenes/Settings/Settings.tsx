@@ -12,6 +12,9 @@ export default function Settings(_: RouteComponentProps) {
         <span>Settings</span>
         <span />
       </NavHeader>
+      <Link to={ROUTES.LOGIN}>Login</Link>
+      <br />
+      <br />
       <Link to={ROUTES.TAGS}>Edit labels</Link>
     </div>
   );

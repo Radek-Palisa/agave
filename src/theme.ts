@@ -1,4 +1,5 @@
 import { createMuiTheme } from '@material-ui/core/styles';
+import { purple } from '@material-ui/core/colors';
 
 // declare module '@material-ui/core/styles/createMuiTheme' {
 //   interface Theme {}
@@ -13,14 +14,35 @@ const theme = createMuiTheme({
         marginBottom: '1rem',
       },
     },
+    MuiCssBaseline: {
+      '@global': {
+        body: {
+          // letterSpacing: '0.03125em',
+          letterSpacing: '0.00938em',
+        },
+      },
+    },
   },
   palette: {
+    primary: {
+      main: purple[500],
+    },
     background: {
       default: '#FFF6E8',
     },
+    text: {
+      primary: 'rgba(0, 0, 0, .8)',
+    },
   },
   typography: {
-    fontFamily: 'Montserrat, Helvetica Neue, Arial, sans-serif',
+    // font-family: 'Cabin' !important;
+    /* font-family: 'Raleway' !important;
+    font-family: 'Libre Baskerville', serif; */
+
+    fontFamily: 'Raleway, Helvetica Neue, Arial, sans-serif',
+    fontSize: 16,
+    fontWeightRegular: 500,
+    fontWeightBold: 600,
     h1: {
       fontSize: '6.0625rem',
       letterSpacing: '-0.01546em',
@@ -40,6 +62,10 @@ const theme = createMuiTheme({
     },
     h6: {
       letterSpacing: '0.0075em',
+      fontFamily: 'Montserrat',
+      fontWeight: 600,
+      fontSize: 18,
+      lineHeight: 1.2,
     },
     subtitle1: {
       letterSpacing: '0.00938em',

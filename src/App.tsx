@@ -17,12 +17,13 @@ import useRestoreFromBackup from './services/useRestoreFromBackup';
 import { ROUTES } from './consts';
 import Settings from './scenes/Settings/Settings';
 import TagEditor from './scenes/TagEditor/TagEditor';
+import BottomNav from './components/BottomNav';
 
 const FadeTransitionRouter = (props: any) => (
   <Location>
     {({ location }) => (
       <TransitionGroup className="transition-group">
-        <CSSTransition key={location.key} classNames="fade" timeout={200}>
+        <CSSTransition key={location.key} classNames="fade" timeout={300}>
           {/* the only difference between a router animation and
               any other animation is that you have to pass the
               location to the router so the old screen renders
@@ -47,13 +48,16 @@ export default function App() {
           <div className="app">
             <FadeTransitionRouter>
               <Home path={ROUTES.HOME} />
-              <Detail path={ROUTES.DETAIL} />
-              <LoginPage path={ROUTES.LOGIN} />
-              <AddEntry path="add" />
-              <EditEntry path="edit" />
               <Settings path={ROUTES.SETTINGS} />
               <TagEditor path={ROUTES.TAGS} />
+
+              <AddEntry path="add" />
+
+              <Detail path={ROUTES.DETAIL} />
+              <EditEntry path="edit" />
+              <LoginPage path={ROUTES.LOGIN} />
             </FadeTransitionRouter>
+            <BottomNav />
           </div>
           <ErrorModal />
         </ErrorProvider>
