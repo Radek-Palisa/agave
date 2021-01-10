@@ -10,7 +10,7 @@ import EntryTitle from './components/EntryTitle';
 const useStyles = makeStyles(theme => ({
   entryRoot: {
     marginBottom: theme.spacing(6),
-    padding: theme.spacing(0, 2),
+    padding: theme.spacing(0, 2.5),
   },
   entryLink: {
     display: 'block',
@@ -32,7 +32,7 @@ export default function Entry({ entry }: Props) {
 
   return (
     <div className={classes.entryRoot}>
-      <Link to={ROUTES.DETAIL} state={entry} className={classes.entryLink}>
+      <Link to={ROUTES.DETAIL} state={entryData} className={classes.entryLink}>
         <EntryTitle>{entryData.title}</EntryTitle>
         <EntryTimestamp>
           {entryData.timestamp.toDate().toLocaleDateString('en-US', {

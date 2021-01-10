@@ -36,7 +36,7 @@ export default function Home({ location }: Props) {
 
   return (
     <div className="page">
-      <NavHeader noMargin>
+      <NavHeader>
         <Logo />
       </NavHeader>
       <div className={classes.entriesRoot}>

@@ -17,7 +17,6 @@ import useRestoreFromBackup from './services/useRestoreFromBackup';
 import { ROUTES } from './consts';
 import Settings from './scenes/Settings/Settings';
 import TagEditor from './scenes/TagEditor/TagEditor';
-import BottomNav from './components/BottomNav';
 
 const FadeTransitionRouter = (props: any) => (
   <Location>
@@ -57,7 +56,6 @@ export default function App() {
               <EditEntry path="edit" />
               <LoginPage path={ROUTES.LOGIN} />
             </FadeTransitionRouter>
-            <BottomNav />
           </div>
           <ErrorModal />
         </ErrorProvider>
