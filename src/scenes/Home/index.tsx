@@ -6,6 +6,7 @@ import NavHeader from '../../components/NavHeader';
 import { makeStyles } from '@material-ui/core';
 import ErrorText from '../../components/ErrorText';
 import Logo from '../../components/Logo';
+import HomeNav from './components/HomeNav';
 
 type Props = RouteComponentProps<{
   location: {
@@ -38,6 +39,7 @@ export default function Home({ location }: Props) {
     <div className="page">
       <NavHeader>
         <Logo />
+        <HomeNav />
       </NavHeader>
       <div className={classes.entriesRoot}>
         {entries.data && entries.data.map(entry => <Entry key={entry.id} entry={entry} />)}
