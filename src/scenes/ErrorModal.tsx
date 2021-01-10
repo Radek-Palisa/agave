@@ -1,6 +1,6 @@
 import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
-import { DialogTitle, DialogActions, Button, Divider } from '@material-ui/core';
+import { DialogTitle, DialogActions, Button } from '@material-ui/core';
 import { useError } from '../providers/ErrorProvider';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import { Typography, makeStyles } from '@material-ui/core';

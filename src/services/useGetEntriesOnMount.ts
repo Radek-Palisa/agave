@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { firestore } from 'firebase';
 import { useAuth } from '../providers/AuthProvider';
 import store from '../store';
 import { MonthEntries } from '../types';
@@ -7,7 +8,7 @@ export default function useGetEntriesOnMount() {
   const authStatus = useAuth();
 
   const [state, setState] = useState<{
-    data: MonthEntries | null;
+    data: firestore.QueryDocumentSnapshot<firestore.DocumentData>[] | null;
     loading: boolean;
     error: null | Error;
   }>({
@@ -23,13 +24,13 @@ export default function useGetEntriesOnMount() {
 
     store
       .getEntries()
-      .then(data =>
-        setState({
+      .then(data => {
+        return setState({
           data,
           loading: false,
           error: null,
-        })
-      )
+        });
+      })
       .catch(error =>
         setState({
           data: null,

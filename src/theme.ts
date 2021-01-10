@@ -31,10 +31,10 @@ const theme = createMuiTheme({
       main: '#F4E7D3',
     },
     background: {
-      default: '#FFF6E8',
+      default: '#FFF',
     },
     text: {
-      primary: 'rgba(0, 0, 0, .8)',
+      primary: '#324050',
     },
   },
   typography: {
@@ -42,7 +42,7 @@ const theme = createMuiTheme({
     /* font-family: 'Raleway' !important;
     font-family: 'Libre Baskerville', serif; */
 
-    fontFamily: 'Raleway, Helvetica Neue, Arial, sans-serif',
+    fontFamily: 'Montserrat, Helvetica Neue, Arial, sans-serif',
     fontSize: 16,
     fontWeightRegular: 500,
     fontWeightMedium: 600,

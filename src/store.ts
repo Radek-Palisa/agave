@@ -3,7 +3,7 @@ import 'firebase/analytics';
 import 'firebase/auth';
 import 'firebase/firestore';
 import { firestore } from 'firebase';
-import { MonthEntries, PostEntryPayload, Tag } from './types';
+import { PostEntryPayload, Tag } from './types';
 
 const config = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -99,57 +99,7 @@ class Store {
     return this.getEntriesRef()
       .orderBy('timestamp', 'desc')
       .get()
-      .then(docRef => {
-        let yearMonthCount = '';
-        let currentDay = 0;
-
-        const data: MonthEntries = [];
-
-        docRef.forEach(doc => {
-          const item = doc.data();
-          const date: Date = item.timestamp.toDate();
-          const day = date.getDate();
-          const year = date.getFullYear();
-          const month = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(date);
-
-          const dataItem = {
-            text: item.text,
-            id: doc.id,
-            date,
-            tags: item.tags,
-          };
-
-          if (yearMonthCount === `${year}-${month}`) {
-            const lastItem = data[data.length - 1];
-
-            if (currentDay === day) {
-              lastItem.days[lastItem.days.length - 1].entries.push(dataItem);
-            } else {
-              currentDay = day;
-              lastItem.days.push({
-                day,
-                entries: [dataItem],
-              });
-            }
-          } else {
-            yearMonthCount = `${year}-${month}`;
-            currentDay = day;
-
-            data.push({
-              month,
-              year,
-              days: [
-                {
-                  day,
-                  entries: [dataItem],
-                },
-              ],
-            });
-          }
-        });
-
-        return data;
-      });
+      .then(result => result.docs);
   };
 
   private getUserSettingsRef = () => {
