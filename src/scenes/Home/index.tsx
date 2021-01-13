@@ -7,6 +7,9 @@ import { makeStyles } from '@material-ui/core';
 import ErrorText from '../../components/ErrorText';
 import Logo from '../../components/Logo';
 import HomeNav from './components/HomeNav';
+import HideOnScroll from '../../components/HideOnScroll';
+import AppBar from '@material-ui/core/AppBar';
+import HomeHeader from './components/HomeHeader';
 
 type Props = RouteComponentProps<{
   location: {
@@ -18,8 +21,8 @@ type Props = RouteComponentProps<{
 
 const useStyles = makeStyles({
   entriesRoot: {
-    overflow: 'scroll',
-    height: 'calc(100vh - 60px - 56px)',
+    // overflow: 'scroll',
+    // height: 'calc(100vh - 60px - 56px)',
   },
 });
 
@@ -36,15 +39,23 @@ export default function Home({ location }: Props) {
   }, [entries, locationState]);
 
   return (
-    <div className="page">
-      <NavHeader>
+    <>
+      {/* <HideOnScroll> */}
+      {/* <AppBar elevation={5}>
+        <NavHeader>
+          <Logo />
+          <HomeNav />
+        </NavHeader>
+      </AppBar> */}
+      <HomeHeader>
         <Logo />
         <HomeNav />
-      </NavHeader>
+      </HomeHeader>
+      {/* </HideOnScroll> */}
       <div className={classes.entriesRoot}>
         {entries.data && entries.data.map(entry => <Entry key={entry.id} entry={entry} />)}
         {entries.error && <ErrorText errorMessage={entries.error.message} />}
       </div>
-    </div>
+    </>
   );
 }

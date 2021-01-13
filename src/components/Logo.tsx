@@ -5,6 +5,11 @@ const useStyles = makeStyles(theme => ({
   logoRoot: {
     display: 'flex',
     alignItems: 'center',
+    marginLeft: 6,
+
+    '& > img': {
+      filter: 'opacity(0.8)',
+    },
 
     '& > span': {
       marginLeft: theme.spacing(1),
@@ -13,6 +18,7 @@ const useStyles = makeStyles(theme => ({
       fontWeight: 500,
       fontSize: 16,
       marginTop: 2,
+      color: theme.palette.text.primary,
     },
   },
 }));
@@ -22,9 +28,9 @@ export default function Logo() {
   return (
     <div className={classes.logoRoot}>
       <img src="/agave.png" width="20px" />
-      <Typography variant="body1" component="span">
+      {/* <Typography variant="body1" component="span">
         Agave
-      </Typography>
+      </Typography> */}
     </div>
   );
 }

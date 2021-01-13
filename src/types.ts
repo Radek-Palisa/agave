@@ -1,5 +1,6 @@
 export type Entry = {
   text: string;
+  title?: string;
   id: string;
   date: Date;
   tags: string[];
@@ -16,6 +17,7 @@ export type MonthEntries = Array<{
 
 export type PostEntryPayload = {
   text: string;
+  title: string;
   tags: string[];
   date: Date;
 };

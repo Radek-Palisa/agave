@@ -1,70 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { navigate } from '@reach/router';
-import { makeStyles, Button, Chip } from '@material-ui/core';
+import { makeStyles, Button } from '@material-ui/core';
 import NavHeader from '../../components/NavHeader';
 import Markdown from '../../components/Markdown';
-import ToggleButton from '@material-ui/lab/ToggleButton';
-import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-import EditIcon from '@material-ui/icons/Edit';
 import VisibilityIcon from '@material-ui/icons/Visibility';
-import DoneIcon from '@material-ui/icons/Done';
 import { PostEntryPayload, Entry } from '../../types';
-import TextField from '@material-ui/core/TextField';
 import useDebounce from '../../services/useDebounce';
 import store from '../../store';
 import BackButton from '../../components/BackButton';
 import Modal from '../../components/Modal';
-import useGetSortedTags from './services/useGetSortedTags';
+import IconButton from '@material-ui/core/IconButton';
+import { AutoResizedTextarea, AutoResizedTitlearea } from './components/AutoResizedTextarea';
 
 const useStyles = makeStyles(theme => ({
-  section: {
+  editorRoot: {
+    // minHeight: 'calc(100% - 60px)',
+    maxWidth: 700,
+    margin: '90px auto 0',
     padding: theme.spacing(1),
 
-    '& > * + *': {
-      marginTop: theme.spacing(2),
-    },
-  },
-  wrapperInner: {
-    height: '60vh',
-  },
-  toggleWrapper: {
-    textAlign: 'right',
-    marginBottom: theme.spacing(2),
-  },
-  tags: {
-    height: 32,
-    display: 'flex',
-    overflow: 'scroll',
-    marginBottom: theme.spacing(3),
-
-    '&::-webkit-scrollbar': {
-      display: 'none',
-    },
-
-    '& > * + *': {
-      marginLeft: theme.spacing(1),
-    },
-  },
-  textarea: {
-    display: 'block',
-    width: '100%',
-    height: '100%',
-    border: 0,
-    resize: 'none',
-    whiteSpace: 'pre-wrap',
-    backgroundColor: '#fffcf8',
-    padding: theme.spacing(2),
-    ...theme.typography.body2,
-  },
-  dateWrapper: {
-    display: 'flex',
-    justifyContent: 'space-between',
+    // '& > * + *': {
+    //   marginTop: theme.spacing(2),
+    // },
   },
   markdown: {
     padding: theme.spacing(2),
   },
   submit: {
-    display: 'block',
+    margin: '150px 16px 30px',
   },
 }));
 
@@ -88,8 +51,8 @@ export default function Editor({
 }: Props) {
   const classes = useStyles();
   const [showExitModal, setShotExitmodal] = useState<boolean>(false);
-  const { data: tagsData } = useGetSortedTags(entryData?.tags);
-  const [mode, setMode] = useState<'write' | 'preview'>('write');
+  const [isPreviewing, setIsPreviewing] = useState(false);
+  const [title, setTitle] = useState(entryData?.title || '');
   const [text, setText] = useState(entryData?.text || '');
   const [date, setDate] = useState(entryData?.date?.toISOString().substring(0, 10));
   const [time, setTime] = useState(entryData?.date?.toISOString().substring(11, 16));
@@ -104,17 +67,11 @@ export default function Editor({
 
   const debouncedText = useDebounce(text, 500);
 
-  const handleSetTag = (itemId: string) =>
-    setTags(prev => ({
-      ...prev,
-      [itemId]: !prev[itemId],
-    }));
-
   const handleSubmit = () => {
     store.backup = null;
     const filteredTags = Object.keys(tags).filter(i => tags[i]);
 
-    return onSubmit({ text, tags: filteredTags, date: new Date(`${date}T${time}`) });
+    return onSubmit({ text, title, tags: filteredTags, date: new Date(`${date}T${time}`) });
   };
 
   const handleBackButton = (next: () => void) => {
@@ -132,6 +89,7 @@ export default function Editor({
   useEffect(() => {
     store.backup = {
       id: entryData?.id,
+      title: title,
       text: debouncedText,
       date: `${date}T${time}`,
       pathname: window.location.pathname,
@@ -144,71 +102,29 @@ export default function Editor({
       <NavHeader>
         <BackButton {...backLinkProps} onClick={handleBackButton} />
         <span>{navTitle}</span>
-        <span />
+        <IconButton
+          onClick={() => setIsPreviewing(prev => !prev)}
+          color={isPreviewing ? 'primary' : 'default'}
+          aria-label="toggle visibility"
+        >
+          <VisibilityIcon />
+        </IconButton>
       </NavHeader>
-      <section className={classes.section}>
-        <div className={classes.toggleWrapper}>
-          <ToggleButtonGroup
-            value={mode}
-            exclusive
-            onChange={(e, value) => setMode(value)}
-            aria-label="text alignment"
-          >
-            <ToggleButton value="write" aria-label="editing mode">
-              <EditIcon />
-            </ToggleButton>
-            <ToggleButton value="preview" aria-label="preview mode">
-              <VisibilityIcon />
-            </ToggleButton>
-          </ToggleButtonGroup>
-        </div>
-        <div className={classes.wrapperInner}>
-          {mode === 'write' ? (
-            <textarea
-              className={classes.textarea}
-              onChange={e => setText(e.target.value)}
-              value={text}
-            />
-          ) : (
-            <Markdown className={classes.markdown} text={text} />
-          )}
-        </div>
-        <div className={classes.tags}>
-          {tagsData?.map(item => (
-            <Chip
-              key={item.id}
-              onClick={() => handleSetTag(item.id)}
-              // onDelete={tags[item.id] ? () => handleSetTag(item.id) : undefined}
-              color={tags[item.id] ? 'primary' : undefined}
-              label={item.label}
-              // deleteIcon={tags[item.id] ? <DoneIcon /> : undefined}
-            />
-          ))}
-        </div>
-        {entryData?.date && (
-          <div className={classes.dateWrapper}>
-            <TextField
-              variant="outlined"
-              id="time"
-              label="Time"
-              type="time"
-              value={time}
-              onChange={e => setTime(e.target.value)}
-            />
-            <TextField
-              variant="outlined"
-              id="date"
-              label="Date"
-              type="date"
-              value={date}
-              onChange={e => setDate(e.target.value)}
-            />
-          </div>
+
+      <section className={classes.editorRoot}>
+        {isPreviewing ? (
+          <Markdown className={classes.markdown} text={text} />
+        ) : (
+          <>
+            <AutoResizedTitlearea onChange={setTitle} value={title} />
+            <AutoResizedTextarea onChange={setText} value={text} />
+          </>
         )}
-        <Button fullWidth variant="contained" onClick={handleSubmit}>
+        <Button className={classes.submit} variant="contained" onClick={handleSubmit}>
           {submitBtnText}
         </Button>
       </section>
+
       <Modal
         open={showExitModal}
         onClose={handleCloseExitModal}

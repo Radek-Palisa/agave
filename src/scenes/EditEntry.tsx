@@ -29,6 +29,7 @@ export default function EditEntry({ location, navigate }: Props) {
           id: location?.state.id,
           date: payload.date,
           tags: payload.tags,
+          title: payload.title,
         },
       });
   }

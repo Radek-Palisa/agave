@@ -25,6 +25,7 @@ export default function Detail({ location }: Props) {
         <DetailMenu itemData={location?.state} />
       </NavHeader>
       <div style={{ padding: '16px 20px 16px' }}>
+        <h1>{location?.state?.title || 'No title'}</h1>
         <Markdown text={location?.state?.text || ''} />
       </div>
     </div>

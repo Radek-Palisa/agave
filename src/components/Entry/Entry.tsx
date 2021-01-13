@@ -30,18 +30,26 @@ export default function Entry({ entry }: Props) {
 
   const entryData = entry.data();
 
+  const entryObject = {
+    id: entry.id,
+    text: entryData.text,
+    date: entryData.timestamp.toDate(),
+    tags: entryData.tags,
+    title: entryData.title,
+  };
+
   return (
-    <div className={classes.entryRoot}>
-      <Link to={ROUTES.DETAIL} state={entryData} className={classes.entryLink}>
+    <div className={classes.entryRoot} id={entry.id}>
+      <Link to={ROUTES.DETAIL} state={entryObject} className={classes.entryLink}>
         <EntryTitle>{entryData.title}</EntryTitle>
         <EntryTimestamp>
-          {entryData.timestamp.toDate().toLocaleDateString('en-US', {
+          {entryObject.date.toLocaleDateString('en-US', {
             year: 'numeric',
             month: 'long',
             day: 'numeric',
           })}
         </EntryTimestamp>
-        <Markdown id={entry.id} text={entryData.text} />
+        <Markdown id={entry.id} text={entryObject.text} />
       </Link>
     </div>
   );

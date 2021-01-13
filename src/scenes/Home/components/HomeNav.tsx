@@ -38,6 +38,8 @@ export default function HomeNav() {
       </IconButton>
       <SwipeableDrawer
         anchor="right"
+        disableSwipeToOpen
+        disableDiscovery
         open={isDrawerOpen}
         onClose={() => setIsDrawerOpen(false)}
         onOpen={() => setIsDrawerOpen(true)}

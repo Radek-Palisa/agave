@@ -1,7 +1,6 @@
 import React from 'react';
 import './App.css';
-import { Router, Location } from '@reach/router';
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import { Router } from '@reach/router';
 import Home from './scenes/Home';
 import Detail from './scenes/Detail/Detail';
 import { ThemeProvider } from '@material-ui/core/styles';
@@ -18,24 +17,6 @@ import { ROUTES } from './consts';
 import Settings from './scenes/Settings/Settings';
 import TagEditor from './scenes/TagEditor/TagEditor';
 
-const FadeTransitionRouter = (props: any) => (
-  <Location>
-    {({ location }) => (
-      <TransitionGroup className="transition-group">
-        <CSSTransition key={location.key} classNames="fade" timeout={300}>
-          {/* the only difference between a router animation and
-              any other animation is that you have to pass the
-              location to the router so the old screen renders
-              the "old location" */}
-          <Router location={location} className="router">
-            {props.children}
-          </Router>
-        </CSSTransition>
-      </TransitionGroup>
-    )}
-  </Location>
-);
-
 export default function App() {
   useRestoreFromBackup();
 
@@ -44,19 +25,15 @@ export default function App() {
       <CssBaseline />
       <AuthProvider>
         <ErrorProvider>
-          <div className="app">
-            <FadeTransitionRouter>
-              <Home path={ROUTES.HOME} />
-              <Settings path={ROUTES.SETTINGS} />
-              <TagEditor path={ROUTES.TAGS} />
-
-              <AddEntry path="add" />
-
-              <Detail path={ROUTES.DETAIL} />
-              <EditEntry path="edit" />
-              <LoginPage path={ROUTES.LOGIN} />
-            </FadeTransitionRouter>
-          </div>
+          <Router>
+            <Home path={ROUTES.HOME} />
+            <Settings path={ROUTES.SETTINGS} />
+            <TagEditor path={ROUTES.TAGS} />
+            <AddEntry path="add" />
+            <Detail path={ROUTES.DETAIL} />
+            <EditEntry path="edit" />
+            <LoginPage path={ROUTES.LOGIN} />
+          </Router>
           <ErrorModal />
         </ErrorProvider>
       </AuthProvider>
