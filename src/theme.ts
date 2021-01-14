@@ -18,7 +18,8 @@ const theme = createMuiTheme({
       '@global': {
         body: {
           // letterSpacing: '0.03125em',
-          letterSpacing: '0.00938em',
+          // letterSpacing: '0.00938em',
+          letterSpacing: 'normal',
         },
       },
     },
@@ -42,14 +43,18 @@ const theme = createMuiTheme({
     /* font-family: 'Raleway' !important;
     font-family: 'Libre Baskerville', serif; */
 
-    fontFamily: 'Montserrat, Helvetica Neue, Arial, sans-serif',
-    fontSize: 16,
-    fontWeightRegular: 500,
+    // fontFamily: 'Montserrat, Helvetica Neue, Arial, sans-serif',
+    fontFamily: `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"`,
+    fontSize: 17,
+    fontWeightRegular: 400,
     fontWeightMedium: 600,
     fontWeightBold: 700,
     h1: {
-      fontSize: '6.0625rem',
-      letterSpacing: '-0.01546em',
+      letterSpacing: 'normal',
+      fontSize: 26,
+      color: '#333',
+      lineHeight: 1.2,
+      fontWeight: 'bold',
     },
     h2: {
       fontSize: '3.8125rem',

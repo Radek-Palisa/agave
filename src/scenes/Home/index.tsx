@@ -21,6 +21,7 @@ type Props = RouteComponentProps<{
 
 const useStyles = makeStyles({
   entriesRoot: {
+    marginTop: 80,
     // overflow: 'scroll',
     // height: 'calc(100vh - 60px - 56px)',
   },

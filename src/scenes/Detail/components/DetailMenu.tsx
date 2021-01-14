@@ -35,6 +35,7 @@ export function DetailMenu({ itemData }: Props) {
   return (
     <div>
       <IconButton
+        color="primary"
         aria-label="menu"
         aria-controls="detail-menu"
         aria-haspopup="true"

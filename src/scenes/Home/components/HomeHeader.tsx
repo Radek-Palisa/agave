@@ -6,6 +6,7 @@ const useStyles = makeStyles(theme => ({
   root: {
     position: 'fixed',
     left: 0,
+    top: 0,
     width: '100%',
     display: 'flex',
     justifyContent: 'space-between',
@@ -13,11 +14,10 @@ const useStyles = makeStyles(theme => ({
     height: 60,
     padding: theme.spacing(1, 2),
     backgroundColor: theme.palette.background.default,
-    // boxShadow: '0 2px 4px rgba(0, 0, 0, .13)',
     transition: 'box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
   },
   elevated: {
-    boxShadow: '0 1px 6px rgba(0, 0, 0, .12)',
+    boxShadow: '0 1px 2px rgba(0, 0, 0, .12)',
   },
 }));
 
