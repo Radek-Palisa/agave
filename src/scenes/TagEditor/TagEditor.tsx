@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import NavHeader from '../../components/NavHeader';
+import AppHeader from '../../components/AppHeader';
 import BackButton from '../../components/BackButton';
 import { ROUTES } from '../../consts';
 import { Tag } from '../../types';
@@ -37,11 +37,11 @@ export default function TagEditor(props: RouteComponentProps) {
 
   return (
     <div className="page">
-      <NavHeader>
+      <AppHeader>
         <BackButton to={ROUTES.SETTINGS} />
         <span>Labels</span>
         <span />
-      </NavHeader>
+      </AppHeader>
       <div>
         <Typography>Labels</Typography>
       </div>

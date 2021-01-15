@@ -7,7 +7,7 @@ import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import firebase from 'firebase';
 import { Button } from '@material-ui/core';
 import { useAuth } from '../providers/AuthProvider';
-import NavHeader from '../components/NavHeader';
+import AppHeader from '../components/AppHeader';
 import { Link } from '@reach/router';
 
 const uiConfig = {
@@ -33,9 +33,9 @@ export default function LoginPage({ location, navigate }: any) {
 
   return (
     <div>
-      <NavHeader>
+      <AppHeader>
         <Link to="/">Home</Link>
-      </NavHeader>
+      </AppHeader>
       <p>Auth status: {authStatus}</p>
       {/*<button onClick={firebase.loginWithGoogle}>Login</button>*/}
       <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={store.auth} />

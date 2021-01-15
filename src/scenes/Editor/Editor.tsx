@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { navigate } from '@reach/router';
 import { makeStyles, Button } from '@material-ui/core';
-import NavHeader from '../../components/NavHeader';
+import AppHeader from '../../components/AppHeader';
 import Markdown from '../../components/Markdown';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import { PostEntryPayload, Entry } from '../../types';
@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
   editorRoot: {
     // minHeight: 'calc(100% - 60px)',
     maxWidth: 700,
-    margin: '90px auto 0',
+    margin: '70px auto 0',
     padding: theme.spacing(1),
 
     // '& > * + *': {
@@ -99,7 +99,7 @@ export default function Editor({
 
   return (
     <>
-      <NavHeader>
+      <AppHeader>
         <BackButton {...backLinkProps} onClick={handleBackButton} />
         <span>{navTitle}</span>
         <IconButton
@@ -109,7 +109,7 @@ export default function Editor({
         >
           <VisibilityIcon />
         </IconButton>
-      </NavHeader>
+      </AppHeader>
 
       <section className={classes.editorRoot}>
         {isPreviewing ? (

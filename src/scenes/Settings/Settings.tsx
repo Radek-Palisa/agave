@@ -1,5 +1,5 @@
 import React from 'react';
-import NavHeader from '../../components/NavHeader';
+import AppHeader from '../../components/AppHeader';
 import { ROUTES } from '../../consts';
 import BackButton from '../../components/BackButton';
 import { Link, RouteComponentProps } from '@reach/router';
@@ -7,11 +7,11 @@ import { Link, RouteComponentProps } from '@reach/router';
 export default function Settings(_: RouteComponentProps) {
   return (
     <div className="page">
-      <NavHeader>
+      <AppHeader>
         <BackButton to={ROUTES.HOME} />
         <span>Settings</span>
         <span />
-      </NavHeader>
+      </AppHeader>
       <Link to={ROUTES.LOGIN}>Login</Link>
       <br />
       <br />

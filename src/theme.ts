@@ -1,17 +1,31 @@
 import { createMuiTheme } from '@material-ui/core/styles';
-import { purple, blue } from '@material-ui/core/colors';
+import { blue } from '@material-ui/core/colors';
 
-// declare module '@material-ui/core/styles/createMuiTheme' {
-//   interface Theme {}
-//   interface ThemeOptions {}
-// }
+declare module '@material-ui/core/styles/createMuiTheme' {
+  interface Theme {
+    custom: {
+      appHeaderHeight: number;
+    };
+  }
+  interface ThemeOptions {
+    custom: {
+      appHeaderHeight: number;
+    };
+  }
+}
 
 const theme = createMuiTheme({
   overrides: {
-    MuiDivider: {
+    MuiSvgIcon: {
       root: {
-        borderColor: '#F4E7D3',
-        marginBottom: '1rem',
+        fontSize: 26,
+
+        // '@media (min-width: 960px)': {
+        //   fontSize: 26,
+        // },
+      },
+      fontSizeLarge: {
+        fontSize: 29,
       },
     },
     MuiCssBaseline: {
@@ -23,6 +37,9 @@ const theme = createMuiTheme({
         },
       },
     },
+  },
+  custom: {
+    appHeaderHeight: 60,
   },
   palette: {
     primary: {

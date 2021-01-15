@@ -25,7 +25,7 @@ export default function App() {
       <CssBaseline />
       <AuthProvider>
         <ErrorProvider>
-          <Router>
+          <Router className="something">
             <Home path={ROUTES.HOME} />
             <Settings path={ROUTES.SETTINGS} />
             <TagEditor path={ROUTES.TAGS} />

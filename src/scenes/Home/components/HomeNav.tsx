@@ -10,11 +10,16 @@ import { Link } from '@reach/router';
 import { ROUTES } from '../../../consts';
 const useStyles = makeStyles({
   menuIcon: {
+    fontSize: 27, // +1px to default
     transform: 'rotateY(180deg);',
   },
   drawerContents: {
     width: 250,
     padding: 30,
+
+    '@media (min-width: 600px)': {
+      padding: 100,
+    },
   },
 });
 
