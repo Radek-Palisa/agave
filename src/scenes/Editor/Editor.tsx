@@ -12,6 +12,7 @@ import Modal from '../../components/Modal';
 import IconButton from '@material-ui/core/IconButton';
 import { AutoResizedTextarea, AutoResizedTitlearea } from './components/AutoResizedTextarea';
 import PageWidth from '../../components/PageWidth';
+import Mousetrap from 'mousetrap';
 
 const useStyles = makeStyles(theme => ({
   editorRoot: {
@@ -80,6 +81,16 @@ export default function Editor({
   };
 
   const handleCloseExitModal = () => setShotExitmodal(false);
+
+  useEffect(() => {
+    Mousetrap.bind('command+k', function () {
+      setIsPreviewing(prev => !prev);
+    });
+
+    return () => {
+      Mousetrap.reset();
+    };
+  }, []);
 
   useEffect(() => {
     store.backup = {

@@ -70,6 +70,7 @@ export function AutoResizedTitlearea({ onChange, value, readonly = false }: Prop
       <textarea
         readOnly={readonly}
         placeholder="Recently"
+        className="mousetrap"
         onChange={e => onChange(e.target.value)}
         rows={1}
         value={value}
@@ -85,6 +86,7 @@ export function AutoResizedTextarea({ onChange, value }: Props) {
     <div className={`${classes.autoResizedAreaRoot}`} data-value={value}>
       <textarea
         placeholder="What's up"
+        className="mousetrap"
         onChange={e => onChange(e.target.value)}
         rows={1}
         value={value}
