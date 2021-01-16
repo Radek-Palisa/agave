@@ -17,7 +17,7 @@ export default function BackButton({ onClick, to, ...options }: Props) {
   };
 
   return (
-    <IconButton onClick={handleClick} aria-label="navigate back">
+    <IconButton color="primary" onClick={handleClick} aria-label="navigate back">
       <ArrowBackIcon />
     </IconButton>
   );

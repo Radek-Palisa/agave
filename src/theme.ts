@@ -19,7 +19,6 @@ const theme = createMuiTheme({
     MuiSvgIcon: {
       root: {
         fontSize: 26,
-
         // '@media (min-width: 960px)': {
         //   fontSize: 26,
         // },
@@ -30,10 +29,15 @@ const theme = createMuiTheme({
     },
     MuiCssBaseline: {
       '@global': {
+        html: {
+          fontSize: 17,
+        },
         body: {
-          // letterSpacing: '0.03125em',
-          // letterSpacing: '0.00938em',
+          fontSize: '1rem',
+          lineHeight: 1.5,
           letterSpacing: 'normal',
+          // https://developers.google.com/web/updates/2017/11/overscroll-behavior
+          overscrollBehaviorY: 'none',
         },
       },
     },
@@ -56,13 +60,8 @@ const theme = createMuiTheme({
     },
   },
   typography: {
-    // font-family: 'Cabin' !important;
-    /* font-family: 'Raleway' !important;
-    font-family: 'Libre Baskerville', serif; */
-
-    // fontFamily: 'Montserrat, Helvetica Neue, Arial, sans-serif',
     fontFamily: `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"`,
-    fontSize: 17,
+    htmlFontSize: 17,
     fontWeightRegular: 400,
     fontWeightMedium: 600,
     fontWeightBold: 700,
@@ -100,7 +99,9 @@ const theme = createMuiTheme({
       letterSpacing: '0.00714em',
     },
     body1: {
-      letterSpacing: '0.00938em',
+      fontSize: '1rem',
+      letterSpacing: 'normal',
+      color: '#324050',
     },
     body2: {
       letterSpacing: '0.01071em',

@@ -11,17 +11,12 @@ import BackButton from '../../components/BackButton';
 import Modal from '../../components/Modal';
 import IconButton from '@material-ui/core/IconButton';
 import { AutoResizedTextarea, AutoResizedTitlearea } from './components/AutoResizedTextarea';
+import PageWidth from '../../components/PageWidth';
 
 const useStyles = makeStyles(theme => ({
   editorRoot: {
-    // minHeight: 'calc(100% - 60px)',
     maxWidth: 700,
-    margin: '70px auto 0',
-    padding: theme.spacing(1),
-
-    // '& > * + *': {
-    //   marginTop: theme.spacing(2),
-    // },
+    paddingTop: 80,
   },
   markdown: {
     padding: theme.spacing(2),
@@ -98,7 +93,7 @@ export default function Editor({
   }, [debouncedText, time, date, tags]);
 
   return (
-    <>
+    <PageWidth>
       <AppHeader>
         <BackButton {...backLinkProps} onClick={handleBackButton} />
         <span>{navTitle}</span>
@@ -112,13 +107,11 @@ export default function Editor({
       </AppHeader>
 
       <section className={classes.editorRoot}>
+        <AutoResizedTitlearea readonly={isPreviewing} onChange={setTitle} value={title} />
         {isPreviewing ? (
           <Markdown className={classes.markdown} text={text} />
         ) : (
-          <>
-            <AutoResizedTitlearea onChange={setTitle} value={title} />
-            <AutoResizedTextarea onChange={setText} value={text} />
-          </>
+          <AutoResizedTextarea onChange={setText} value={text} />
         )}
         <Button className={classes.submit} variant="contained" onClick={handleSubmit}>
           {submitBtnText}
@@ -138,6 +131,6 @@ export default function Editor({
           </>
         }
       />
-    </>
+    </PageWidth>
   );
 }

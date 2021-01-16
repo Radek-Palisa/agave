@@ -1,36 +1,23 @@
 import React from 'react';
-import { makeStyles, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
+import IconButton from '@material-ui/core/IconButton';
 
-const useStyles = makeStyles(theme => ({
-  logoRoot: {
-    display: 'flex',
-    alignItems: 'center',
-    marginLeft: 6,
-
-    '& > img': {
-      filter: 'opacity(0.8)',
-    },
-
-    '& > span': {
-      marginLeft: theme.spacing(1),
-      textTransform: 'uppercase',
-      letterSpacing: 1,
-      fontWeight: 500,
-      fontSize: 16,
-      marginTop: 2,
-      color: theme.palette.text.primary,
-    },
+const useStyles = makeStyles({
+  logo: {
+    filter: 'opacity(0.8)',
   },
-}));
+});
 
 export default function Logo() {
   const classes = useStyles();
+
+  const handleClick = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
-    <div className={classes.logoRoot}>
-      <img src="/agave.png" width="20px" />
-      {/* <Typography variant="body1" component="span">
-        Agave
-      </Typography> */}
-    </div>
+    <IconButton onClick={handleClick}>
+      <img src="/agave.png" width="20px" className={classes.logo} />
+    </IconButton>
   );
 }

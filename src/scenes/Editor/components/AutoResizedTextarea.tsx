@@ -35,10 +35,11 @@ const useTitleStyles = makeStyles((theme: Theme) => ({
     '&::after,textarea': {
       ...textAreaStyles,
       padding: theme.spacing(2),
-      fontFamily: theme.typography.fontFamily,
-      fontWeight: 600,
-      lineHeight: 1.4,
-      fontSize: 20,
+      // fontFamily: theme.typography.fontFamily,
+      // fontWeight: 600,
+      // lineHeight: 1.4,
+      // fontSize: 20,
+      ...theme.typography.h1,
     },
   },
 }));
@@ -50,7 +51,7 @@ const useTextStyles = makeStyles((theme: Theme) => ({
     '&::after,textarea': {
       ...textAreaStyles,
       padding: theme.spacing(2),
-      ...theme.typography.body2,
+      ...theme.typography.body1,
     },
   },
 }));
@@ -58,14 +59,16 @@ const useTextStyles = makeStyles((theme: Theme) => ({
 type Props = {
   onChange: (text: string) => void;
   value: string;
+  readonly?: boolean;
 };
 
-export function AutoResizedTitlearea({ onChange, value }: Props) {
+export function AutoResizedTitlearea({ onChange, value, readonly = false }: Props) {
   const classes = useTitleStyles();
 
   return (
     <div className={`${classes.autoResizedAreaRoot}`} data-value={value}>
       <textarea
+        readOnly={readonly}
         placeholder="Recently"
         onChange={e => onChange(e.target.value)}
         rows={1}

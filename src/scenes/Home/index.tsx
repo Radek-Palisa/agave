@@ -18,8 +18,8 @@ type Props = RouteComponentProps<{
 }>;
 
 const useStyles = makeStyles({
-  entriesRoot: {
-    marginTop: 80,
+  homeRoot: {
+    paddingTop: 80,
   },
 });
 
@@ -31,7 +31,10 @@ export default function Home({ location }: Props) {
   useEffect(() => {
     if (entries.data && locationState?.id) {
       const element = document.getElementById(locationState.id);
-      element?.scrollIntoView();
+      if (element) {
+        const posY = element?.getBoundingClientRect().top + window.pageYOffset + -80;
+        window.scrollTo({ top: posY });
+      }
     }
   }, [entries, locationState]);
 
@@ -41,7 +44,7 @@ export default function Home({ location }: Props) {
         <Logo />
         <HomeNav />
       </AppHeader>
-      <div className={classes.entriesRoot}>
+      <div className={classes.homeRoot}>
         {entries.data && entries.data.map(entry => <Entry key={entry.id} entry={entry} />)}
         {entries.error && <ErrorText errorMessage={entries.error.message} />}
       </div>
