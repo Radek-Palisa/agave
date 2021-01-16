@@ -3,7 +3,7 @@ import { RouteComponentProps, Link, navigate } from '@reach/router';
 import Markdown from '../../components/Markdown';
 import AppHeader from '../../components/AppHeader';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import { DetailMenu } from './components/DetailMenu';
+import { DetailNav } from './components/DetailNav';
 import { Entry } from '../../types';
 import DetailDateTitle from './components/DetailDateTitle';
 import { ROUTES } from '../../consts';
@@ -46,7 +46,7 @@ export default function Detail({ location }: Props) {
           <ArrowBackIcon />
         </IconButton>
         {/* <DetailDateTitle date={location?.state?.date} /> */}
-        <DetailMenu itemData={location?.state} />
+        <DetailNav itemData={location?.state} />
       </AppHeader>
       <div className={classes.detailRoot}>
         <EntryTitle>{location?.state?.title}</EntryTitle>
