@@ -46,7 +46,6 @@ export default function Editor({
   entryData,
 }: Props) {
   const classes = useStyles();
-  const [showExitModal, setShotExitmodal] = useState<boolean>(false);
   const [isPreviewing, setIsPreviewing] = useState(false);
   const [title, setTitle] = useState(entryData?.title || '');
   const [text, setText] = useState(entryData?.text || '');
@@ -61,26 +60,13 @@ export default function Editor({
       : {}
   );
 
+  const debouncedTitle = useDebounce(title, 300);
   const debouncedText = useDebounce(text, 500);
 
   const handleSubmit = () => {
-    store.backup = null;
     const filteredTags = Object.keys(tags).filter(i => tags[i]);
-
     return onSubmit({ text, title, tags: filteredTags, date: new Date(`${date}T${time}`) });
   };
-
-  const handleBackButton = (next: () => void) => {
-    setShotExitmodal(true);
-  };
-
-  const handleExitConfirmation = () => {
-    store.backup = null;
-    handleCloseExitModal();
-    navigate(backLinkProps.to, backLinkProps);
-  };
-
-  const handleCloseExitModal = () => setShotExitmodal(false);
 
   useEffect(() => {
     Mousetrap.bind('command+k', function () {
@@ -95,18 +81,18 @@ export default function Editor({
   useEffect(() => {
     store.backup = {
       id: entryData?.id,
-      title: title,
+      title: debouncedTitle,
       text: debouncedText,
       date: `${date}T${time}`,
       pathname: window.location.pathname,
       tags: Object.keys(tags).filter(i => tags[i]),
     };
-  }, [debouncedText, time, date, tags]);
+  }, [debouncedText, debouncedTitle, time, date, tags]);
 
   return (
     <PageWidth>
       <AppHeader>
-        <BackButton {...backLinkProps} onClick={handleBackButton} />
+        <BackButton {...backLinkProps} onClick={handleSubmit} />
         <span>{navTitle}</span>
         <IconButton
           onClick={() => setIsPreviewing(prev => !prev)}
@@ -124,24 +110,10 @@ export default function Editor({
         ) : (
           <AutoResizedTextarea onChange={setText} value={text} />
         )}
-        <Button className={classes.submit} variant="contained" onClick={handleSubmit}>
+        {/* <Button className={classes.submit} variant="contained" onClick={handleSubmit}>
           {submitBtnText}
-        </Button>
+        </Button> */}
       </section>
-
-      <Modal
-        open={showExitModal}
-        onClose={handleCloseExitModal}
-        title="Wait a second!"
-        description="You are leaving unsaved data behind."
-        icon={<>icon</>}
-        actions={
-          <>
-            <Button onClick={handleExitConfirmation}>Leave anyway</Button>
-            <Button onClick={handleCloseExitModal}>Stay</Button>
-          </>
-        }
-      />
     </PageWidth>
   );
 }
