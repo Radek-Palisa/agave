@@ -18,6 +18,17 @@ const useStyles = makeStyles(theme => ({
     '& > ul, & > ol': {
       paddingLeft: 18,
     },
+
+    '& img': {
+      maxWidth: '100%',
+    },
+
+    '& blockquote': {
+      marginLeft: 0,
+      paddingLeft: theme.spacing(2),
+      borderLeft: '4px solid #9a9a9a',
+      color: '#797979',
+    },
   },
 }));
 
