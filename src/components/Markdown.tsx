@@ -29,6 +29,35 @@ const useStyles = makeStyles(theme => ({
       borderLeft: '4px solid #9a9a9a',
       color: '#797979',
     },
+
+    '& pre': {
+      fontSize: '0.882352em',
+      padding: theme.spacing(1),
+      backgroundColor: '#1d1c1d0a',
+      border: '1px solid #1d1c1d21',
+      borderRadius: 4,
+
+      '& code': {
+        color: 'initial',
+      },
+    },
+
+    '& code': {
+      color: '#e01e5a',
+    },
+
+    '& hr': {
+      border: 'none',
+      backgroundColor: '#1d1c1d21',
+      height: 1,
+      margin: '0 -20px 1em',
+
+      '@media (min-width: 700px)': {
+        width: '20%',
+        margin: '2em auto',
+        backgroundImage: 'linear-gradient(to right, #ccc, #333, #ccc)',
+      },
+    },
   },
 }));
 
