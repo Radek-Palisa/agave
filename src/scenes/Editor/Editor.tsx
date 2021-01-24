@@ -4,6 +4,7 @@ import { makeStyles, Button } from '@material-ui/core';
 import AppHeader from '../../components/AppHeader';
 import Markdown from '../../components/Markdown';
 import VisibilityIcon from '@material-ui/icons/Visibility';
+import MenuBookIcon from '@material-ui/icons/MenuBook';
 import { PostEntryPayload, Entry } from '../../types';
 import useDebounce from '../../services/useDebounce';
 import store from '../../store';
@@ -13,6 +14,7 @@ import IconButton from '@material-ui/core/IconButton';
 import { AutoResizedTextarea, AutoResizedTitlearea } from './components/AutoResizedTextarea';
 import PageWidth from '../../components/PageWidth';
 import Mousetrap from 'mousetrap';
+import EditorMarkdownDocs from './components/EditorMarkdownDocs';
 
 const useStyles = makeStyles(theme => ({
   editorRoot: {
@@ -47,6 +49,7 @@ export default function Editor({
 }: Props) {
   const classes = useStyles();
   const [isPreviewing, setIsPreviewing] = useState(false);
+  const [isViewingDocs, setIsViewingDocs] = useState(false);
   const [title, setTitle] = useState(entryData?.title || '');
   const [text, setText] = useState(entryData?.text || '');
   const [date, setDate] = useState(entryData?.date?.toISOString().substring(0, 10));
@@ -94,14 +97,25 @@ export default function Editor({
       <AppHeader>
         <BackButton {...backLinkProps} onClick={handleSubmit} />
         <span>{navTitle}</span>
-        <IconButton
-          onClick={() => setIsPreviewing(prev => !prev)}
-          color={isPreviewing ? 'primary' : 'default'}
-          aria-label="toggle visibility"
-        >
-          <VisibilityIcon />
-        </IconButton>
+        <div>
+          <IconButton
+            onClick={() => setIsViewingDocs(prev => !prev)}
+            color={isPreviewing ? 'primary' : 'default'}
+            aria-label="toggle visibility"
+          >
+            <MenuBookIcon />
+          </IconButton>
+          <IconButton
+            onClick={() => setIsPreviewing(prev => !prev)}
+            color={isPreviewing ? 'primary' : 'default'}
+            aria-label="toggle visibility"
+          >
+            <VisibilityIcon />
+          </IconButton>
+        </div>
       </AppHeader>
+
+      {isViewingDocs && <EditorMarkdownDocs />}
 
       <section className={classes.editorRoot}>
         <AutoResizedTitlearea readonly={isPreviewing} onChange={setTitle} value={title} />
