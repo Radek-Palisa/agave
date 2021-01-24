@@ -6,6 +6,7 @@ import { Link } from '@reach/router';
 import { ROUTES } from '../../consts';
 import EntryTimestamp from './components/EntryTimestamp';
 import EntryTitle from './components/EntryTitle';
+import store from '../../store';
 
 const useStyles = makeStyles(theme => ({
   entryRoot: {
@@ -38,9 +39,16 @@ export default function Entry({ entry }: Props) {
     title: entryData.title,
   };
 
+  const handleClick = () => store.setCurrentEntry(entryObject);
+
   return (
     <div className={classes.entryRoot} id={entry.id}>
-      <Link to={ROUTES.DETAIL} state={entryObject} className={classes.entryLink}>
+      <Link
+        to={ROUTES.DETAIL}
+        state={entryObject}
+        onClick={handleClick}
+        className={classes.entryLink}
+      >
         <EntryTitle>{entryData.title}</EntryTitle>
         <EntryTimestamp>
           {entryObject.date.toLocaleDateString('en-US', {

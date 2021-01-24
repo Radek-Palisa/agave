@@ -1,5 +1,5 @@
-import React from 'react';
-import { RouteComponentProps, Link, navigate } from '@reach/router';
+import React, { useEffect, useState } from 'react';
+import { navigate, RouteComponentProps } from '@reach/router';
 import Markdown from '../../components/Markdown';
 import AppHeader from '../../components/AppHeader';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
@@ -11,6 +11,7 @@ import { IconButton, makeStyles } from '@material-ui/core';
 import EntryTitle from '../../components/Entry/components/EntryTitle';
 import EntryTimestamp from '../../components/Entry/components/EntryTimestamp';
 import PageWidth from '../../components/PageWidth';
+import store from '../../store';
 
 const useStyles = makeStyles(theme => ({
   detailRoot: {
@@ -24,21 +25,26 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-type Props = RouteComponentProps<{
-  location: {
-    state?: Entry;
-  };
-}>;
-
-export default function Detail({ location }: Props) {
+export default function Detail(props: RouteComponentProps) {
   const classes = useStyles();
+  const [entry, setEntry] = useState<Entry | null>(null);
+
+  useEffect(() => {
+    store.getCurrentEntry().then(setEntry);
+  }, []);
+
+  const handleEntryDelete = () => {
+    if (entry?.id) {
+      store.deleteEntry(entry?.id);
+    }
+  };
 
   return (
     <PageWidth>
       <AppHeader>
         <IconButton
           onClick={() => {
-            navigate(ROUTES.HOME, { state: { id: location?.state?.id } });
+            navigate(ROUTES.HOME, { state: { id: entry?.id } });
           }}
           color="primary"
           aria-label="add entry"
@@ -46,18 +52,22 @@ export default function Detail({ location }: Props) {
           <ArrowBackIcon />
         </IconButton>
         {/* <DetailDateTitle date={location?.state?.date} /> */}
-        <DetailNav itemData={location?.state} />
+        <DetailNav onEntryDelete={handleEntryDelete} />
       </AppHeader>
       <div className={classes.detailRoot}>
-        <EntryTitle>{location?.state?.title}</EntryTitle>
-        <EntryTimestamp>
-          {location?.state?.date.toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-          })}
-        </EntryTimestamp>
-        <Markdown text={location?.state?.text || ''} />
+        {entry && (
+          <>
+            <EntryTitle>{entry.title}</EntryTitle>
+            <EntryTimestamp>
+              {entry.date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}
+            </EntryTimestamp>
+            <Markdown text={entry.text || ''} />
+          </>
+        )}
       </div>
     </PageWidth>
   );

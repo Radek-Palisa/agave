@@ -3,7 +3,7 @@ import 'firebase/analytics';
 import 'firebase/auth';
 import 'firebase/firestore';
 import { firestore } from 'firebase';
-import { PostEntryPayload, Tag } from './types';
+import { Entry, PostEntryPayload, Tag } from './types';
 
 const config = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -20,6 +20,7 @@ class Store {
   auth: app.auth.Auth;
   googleProvider: app.auth.GoogleAuthProvider;
   db: app.firestore.Firestore;
+  private currentEntry: Entry | null = null;
 
   constructor() {
     app.initializeApp(config);
@@ -38,6 +39,12 @@ class Store {
 
     this.googleProvider = new app.auth.GoogleAuthProvider();
   }
+
+  getCurrentEntry = () => Promise.resolve(this.currentEntry);
+
+  setCurrentEntry = (entry: Entry | null) => {
+    this.currentEntry = entry;
+  };
 
   // signOut = () => this.auth.signOut();
 

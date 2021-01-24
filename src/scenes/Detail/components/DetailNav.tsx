@@ -8,25 +8,24 @@ import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import EditIcon from '@material-ui/icons/Edit';
 import Button from '@material-ui/core/Button';
 import Modal from '../../../components/Modal';
+
 type Props = {
-  itemData?: Entry;
+  onEntryDelete: () => void;
 };
 
-export function DetailNav({ itemData }: Props) {
+export function DetailNav({ onEntryDelete }: Props) {
   const [confirmDeleteModalOpen, setConfirmDeleteModalOpen] = useState<boolean>(false);
 
   const handleConfirmModalClose = () => setConfirmDeleteModalOpen(false);
 
   const handleDelete = () => {
-    if (!itemData?.id) {
-      throw new Error('missing entry id');
-    }
-    store.deleteEntry(itemData?.id);
-    navigate('/');
+    onEntryDelete();
+    store.setCurrentEntry(null);
+    navigate(ROUTES.HOME);
   };
 
   const handleEditClick = () => {
-    navigate(ROUTES.EDIT_ENTRY, { state: itemData });
+    navigate(ROUTES.EDIT_ENTRY);
   };
 
   return (

@@ -1,20 +1,18 @@
 import { RouteComponentProps } from '@reach/router';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Editor from './Editor/Editor';
 import store from '../store';
 import { PostEntryPayload, Entry } from '../types';
-import ErrorText from '../components/ErrorText';
 import { useError } from '../providers/ErrorProvider';
 import { ROUTES } from '../consts';
 
-type Props = RouteComponentProps<{
-  location: {
-    state: Entry;
-  };
-}>;
-
-export default function EditEntry({ location, navigate }: Props) {
+export default function EditEntry({ navigate }: RouteComponentProps) {
   const [, setError] = useError();
+  const [entry, setEntry] = useState<Entry | null>();
+
+  useEffect(() => {
+    store.getCurrentEntry().then(setEntry);
+  }, []);
 
   function handleSubmit(payload: PostEntryPayload) {
     if (!navigate) return;
@@ -23,7 +21,7 @@ export default function EditEntry({ location, navigate }: Props) {
 
     const newState = {
       text: payload.text,
-      id: location?.state.id,
+      id: entry?.id,
       date: payload.date,
       tags: payload.tags,
       title: payload.title,
@@ -31,7 +29,7 @@ export default function EditEntry({ location, navigate }: Props) {
 
     navigate(ROUTES.DETAIL, { state: newState });
 
-    store.editEntry(payload, location?.state.id || '').catch(error => {
+    store.editEntry(payload, entry?.id || '').catch(error => {
       setError({
         message: `There's been a problem while saving the entry.`,
         additionalInfo: error.message,
@@ -41,17 +39,14 @@ export default function EditEntry({ location, navigate }: Props) {
     });
   }
 
-  if (!location?.state) {
-    return <ErrorText errorMessage="Missing data" />;
-  }
+  if (!entry) return null;
 
   return (
     <Editor
-      backLinkProps={{ to: ROUTES.DETAIL, state: location?.state }}
+      backLinkProps={{ to: ROUTES.DETAIL }}
       navTitle="Edit Entry"
-      submitBtnText="Update"
       onSubmit={handleSubmit}
-      entryData={location.state}
+      entryData={entry}
     />
   );
 }

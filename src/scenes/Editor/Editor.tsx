@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { navigate } from '@reach/router';
 import { makeStyles, Button } from '@material-ui/core';
 import AppHeader from '../../components/AppHeader';
@@ -24,9 +24,6 @@ const useStyles = makeStyles(theme => ({
   markdown: {
     padding: theme.spacing(2),
   },
-  submit: {
-    margin: '150px 16px 30px',
-  },
 }));
 
 type Props = {
@@ -35,21 +32,24 @@ type Props = {
     state?: Entry;
   };
   navTitle: string;
-  submitBtnText: string;
   onSubmit: (payload: PostEntryPayload) => void;
   entryData?: Partial<Entry>;
 };
 
-export default function Editor({
-  backLinkProps,
-  navTitle,
-  submitBtnText,
-  onSubmit,
-  entryData,
-}: Props) {
+type Values = {
+  id: string | undefined;
+  text: string;
+  title: string;
+  date: string;
+  pathname: string;
+  tags: string[];
+};
+
+export default function Editor({ backLinkProps, navTitle, onSubmit, entryData }: Props) {
   const classes = useStyles();
   const [isPreviewing, setIsPreviewing] = useState(false);
   const [isViewingDocs, setIsViewingDocs] = useState(false);
+  const values = useRef<Values>();
   const [title, setTitle] = useState(entryData?.title || '');
   const [text, setText] = useState(entryData?.text || '');
   const [date, setDate] = useState(entryData?.date?.toISOString().substring(0, 10));
@@ -72,6 +72,24 @@ export default function Editor({
   };
 
   useEffect(() => {
+    return () => {
+      store.setCurrentEntry({
+        id: values.current?.id || '',
+        text: values.current?.text || '',
+        title: values.current?.title || '',
+        tags: values.current?.tags || [],
+        date: new Date(values.current?.date || Date.now()),
+      });
+      onSubmit({
+        text: values.current?.text || '',
+        title: values.current?.title || '',
+        tags: values.current?.tags || [],
+        date: new Date(values.current?.date || Date.now()),
+      });
+    };
+  }, []);
+
+  useEffect(() => {
     Mousetrap.bind('command+k', function () {
       setIsPreviewing(prev => !prev);
     });
@@ -82,7 +100,7 @@ export default function Editor({
   }, []);
 
   useEffect(() => {
-    store.backup = {
+    const newValues = {
       id: entryData?.id,
       title: debouncedTitle,
       text: debouncedText,
@@ -90,6 +108,9 @@ export default function Editor({
       pathname: window.location.pathname,
       tags: Object.keys(tags).filter(i => tags[i]),
     };
+
+    values.current = newValues;
+    store.backup = newValues;
   }, [debouncedText, debouncedTitle, time, date, tags]);
 
   return (
@@ -124,9 +145,6 @@ export default function Editor({
         ) : (
           <AutoResizedTextarea onChange={setText} value={text} />
         )}
-        {/* <Button className={classes.submit} variant="contained" onClick={handleSubmit}>
-          {submitBtnText}
-        </Button> */}
       </section>
     </PageWidth>
   );
