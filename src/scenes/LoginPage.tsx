@@ -9,6 +9,7 @@ import { Button } from '@material-ui/core';
 import { useAuth } from '../providers/AuthProvider';
 import AppHeader from '../components/AppHeader';
 import { Link } from '@reach/router';
+import PageWidth from '../components/PageWidth';
 
 const uiConfig = {
   signInFlow: 'popup',
@@ -32,7 +33,7 @@ export default function LoginPage({ location, navigate }: any) {
   // }, [authStatus]);
 
   return (
-    <div>
+    <PageWidth>
       <AppHeader>
         <Link to="/">Home</Link>
       </AppHeader>
@@ -42,6 +43,6 @@ export default function LoginPage({ location, navigate }: any) {
       <Button variant="outlined" onClick={() => store.auth.signOut()}>
         Sign out
       </Button>
-    </div>
+    </PageWidth>
   );
 }
