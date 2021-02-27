@@ -2,7 +2,6 @@ import app from 'firebase/app';
 import 'firebase/analytics';
 import 'firebase/auth';
 import 'firebase/firestore';
-import { firestore } from 'firebase';
 import { Entry, PostEntryPayload, Tag } from './types';
 
 const config = {
@@ -85,7 +84,7 @@ class Store {
   addEntry = async ({ date, ...payload }: PostEntryPayload) => {
     return this.getEntriesRef().add({
       ...payload,
-      timestamp: firestore.Timestamp.now(),
+      timestamp: app.firestore.Timestamp.now(),
     });
   };
 
@@ -94,7 +93,7 @@ class Store {
       .doc(entryId)
       .update({
         ...payload,
-        timestamp: firestore.Timestamp.fromDate(date),
+        timestamp: app.firestore.Timestamp.fromDate(date),
       });
   };
 
@@ -157,7 +156,7 @@ class Store {
   addUserTag = async () => {
     return this.getUserTagsRef()
       .add({
-        timestamp: firestore.Timestamp.now(),
+        timestamp: app.firestore.Timestamp.now(),
       })
       .then(docRef => docRef.id);
   };

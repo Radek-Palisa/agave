@@ -18,7 +18,7 @@ export default function BottomNav() {
   const classes = useStyles();
   const [value, setValue] = React.useState<string>(ROUTES.HOME);
 
-  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+  const handleChange = (event: React.ChangeEvent<any>, newValue: string) => {
     setValue(newValue);
     navigate(newValue);
   };

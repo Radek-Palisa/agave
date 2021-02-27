@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core';
-import { firestore } from 'firebase';
+import firebaseApp from 'firebase/app';
 import Markdown from '../Markdown';
 import { Link } from '@reach/router';
 import { ROUTES } from '../../consts';
@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 type Props = {
-  entry: firestore.QueryDocumentSnapshot<firestore.DocumentData>;
+  entry: firebaseApp.firestore.QueryDocumentSnapshot<firebaseApp.firestore.DocumentData>;
 };
 
 export default function Entry({ entry }: Props) {
