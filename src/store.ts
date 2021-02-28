@@ -19,7 +19,6 @@ class Store {
   auth: app.auth.Auth;
   googleProvider: app.auth.GoogleAuthProvider;
   db: app.firestore.Firestore;
-  private currentEntry: Entry | null = null;
 
   constructor() {
     app.initializeApp(config);
@@ -39,41 +38,7 @@ class Store {
     this.googleProvider = new app.auth.GoogleAuthProvider();
   }
 
-  getCurrentEntry = () => Promise.resolve(this.currentEntry);
-
-  setCurrentEntry = (entry: Entry | null) => {
-    this.currentEntry = entry;
-  };
-
   // signOut = () => this.auth.signOut();
-
-  get backup() {
-    const item = window.localStorage.getItem('entryBackup');
-    if (!item) return null;
-    const parsed = JSON.parse(item);
-    const { date, ...rest } = parsed;
-    const validatedDate = new Date(date);
-
-    if (
-      validatedDate instanceof Date &&
-      // @ts-ignore
-      !isNaN(validatedDate)
-    ) {
-      rest.date = validatedDate;
-    }
-
-    return rest;
-  }
-
-  set backup(entry: any) {
-    // make async
-    setTimeout(() => {
-      if (!entry) {
-        return window.localStorage.removeItem('entryBackup');
-      }
-      window.localStorage.setItem('entryBackup', JSON.stringify(entry));
-    }, 0);
-  }
 
   private getEntriesRef = () => {
     if (!this.auth?.currentUser?.uid) throw new Error('Unauthorized');
@@ -81,16 +46,16 @@ class Store {
     return this.db.collection('users').doc(this.auth.currentUser.uid).collection('entries');
   };
 
-  addEntry = async ({ date, ...payload }: PostEntryPayload) => {
+  addEntry = async ({ date: _, ...payload }: PostEntryPayload) => {
     return this.getEntriesRef().add({
       ...payload,
       timestamp: app.firestore.Timestamp.now(),
     });
   };
 
-  editEntry = async ({ date, ...payload }: PostEntryPayload, entryId: string) => {
+  editEntry = async ({ date, id, ...payload }: Entry) => {
     return this.getEntriesRef()
-      .doc(entryId)
+      .doc(id)
       .update({
         ...payload,
         timestamp: app.firestore.Timestamp.fromDate(date),

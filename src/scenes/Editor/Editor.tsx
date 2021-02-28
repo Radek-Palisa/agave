@@ -1,15 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { navigate } from '@reach/router';
-import { makeStyles, Button } from '@material-ui/core';
+import React, { useState, useEffect } from 'react';
+import { makeStyles } from '@material-ui/core';
 import AppHeader from '../../components/AppHeader';
 import Markdown from '../../components/Markdown';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import MenuBookIcon from '@material-ui/icons/MenuBook';
-import { PostEntryPayload, Entry } from '../../types';
+import { Entry, PostEntryPayload } from '../../types';
 import useDebounce from '../../services/useDebounce';
-import store from '../../store';
 import BackButton from '../../components/BackButton';
-import Modal from '../../components/Modal';
 import IconButton from '@material-ui/core/IconButton';
 import { AutoResizedTextarea, AutoResizedTitlearea } from './components/AutoResizedTextarea';
 import PageWidth from '../../components/PageWidth';
@@ -32,31 +29,21 @@ type Props = {
     state?: Entry;
   };
   navTitle: string;
-  onSubmit: (payload: PostEntryPayload) => void;
-  entryData?: Partial<Entry>;
+  onChange: (values: PostEntryPayload) => void;
+  initialValues: Entry;
 };
 
-type Values = {
-  id: string | undefined;
-  text: string;
-  title: string;
-  date: string;
-  pathname: string;
-  tags: string[];
-};
-
-export default function Editor({ backLinkProps, navTitle, onSubmit, entryData }: Props) {
+export default function Editor({ backLinkProps, navTitle, onChange, initialValues }: Props) {
   const classes = useStyles();
   const [isPreviewing, setIsPreviewing] = useState(false);
   const [isViewingDocs, setIsViewingDocs] = useState(false);
-  const values = useRef<Values>();
-  const [title, setTitle] = useState(entryData?.title || '');
-  const [text, setText] = useState(entryData?.text || '');
-  const [date, setDate] = useState(entryData?.date?.toISOString().substring(0, 10));
-  const [time, setTime] = useState(entryData?.date?.toISOString().substring(11, 16));
-  const [tags, setTags] = useState<{ [tagId: string]: boolean }>(
-    entryData?.tags
-      ? entryData.tags.reduce<{ [key: string]: boolean }>((acc, val) => {
+  const [title, setTitle] = useState(initialValues.title);
+  const [text, setText] = useState(initialValues.text);
+  const [date] = useState(initialValues.date.toISOString().substring(0, 10));
+  const [time] = useState(initialValues.date.toISOString().substring(11, 16));
+  const [tags] = useState<{ [tagId: string]: boolean }>(
+    initialValues?.tags
+      ? initialValues.tags.reduce<{ [key: string]: boolean }>((acc, val) => {
           acc[val] = true;
           return acc;
         }, {})
@@ -66,28 +53,14 @@ export default function Editor({ backLinkProps, navTitle, onSubmit, entryData }:
   const debouncedTitle = useDebounce(title, 300);
   const debouncedText = useDebounce(text, 500);
 
-  const handleSubmit = () => {
-    const filteredTags = Object.keys(tags).filter(i => tags[i]);
-    return onSubmit({ text, title, tags: filteredTags, date: new Date(`${date}T${time}`) });
-  };
-
   useEffect(() => {
-    return () => {
-      store.setCurrentEntry({
-        id: values.current?.id || '',
-        text: values.current?.text || '',
-        title: values.current?.title || '',
-        tags: values.current?.tags || [],
-        date: new Date(values.current?.date || Date.now()),
-      });
-      onSubmit({
-        text: values.current?.text || '',
-        title: values.current?.title || '',
-        tags: values.current?.tags || [],
-        date: new Date(values.current?.date || Date.now()),
-      });
-    };
-  }, []);
+    onChange({
+      title: debouncedTitle,
+      text: debouncedText,
+      date: new Date(`${date}T${time}`),
+      tags: Object.keys(tags).filter(i => tags[i]),
+    });
+  }, [debouncedText, debouncedTitle, time, date, tags]);
 
   useEffect(() => {
     Mousetrap.bind('command+k', function () {
@@ -99,24 +72,10 @@ export default function Editor({ backLinkProps, navTitle, onSubmit, entryData }:
     };
   }, []);
 
-  useEffect(() => {
-    const newValues = {
-      id: entryData?.id,
-      title: debouncedTitle,
-      text: debouncedText,
-      date: `${date}T${time}`,
-      pathname: window.location.pathname,
-      tags: Object.keys(tags).filter(i => tags[i]),
-    };
-
-    values.current = newValues;
-    store.backup = newValues;
-  }, [debouncedText, debouncedTitle, time, date, tags]);
-
   return (
     <PageWidth>
       <AppHeader>
-        <BackButton {...backLinkProps} onClick={handleSubmit} />
+        <BackButton {...backLinkProps} />
         <span>{navTitle}</span>
         <div>
           <IconButton

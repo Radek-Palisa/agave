@@ -1,9 +1,11 @@
 export const ROUTES = {
   HOME: '/',
-  DETAIL: '/detail',
   LOGIN: '/login',
   SETTINGS: '/settings',
   TAGS: '/tags',
-  EDIT_ENTRY: '/edit',
-  ADD_ENTRY: '/add',
+  DETAIL: 'entry/:entryId',
+  EDIT_ENTRY: '/entry/:entryId/edit',
+  ADD_ENTRY: '/entry/add',
+  getEntryDetailPath: (entryId: string) => `/entry/${entryId}`,
+  getEntryEditPath: (entryId: string) => `/entry/${entryId}/edit`,
 } as const;

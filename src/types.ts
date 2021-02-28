@@ -1,7 +1,7 @@
 export type Entry = {
-  text: string;
-  title?: string;
   id: string;
+  text: string;
+  title: string;
   date: Date;
   tags: string[];
 };

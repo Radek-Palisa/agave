@@ -1,12 +1,11 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core';
-import firebaseApp from 'firebase/app';
 import Markdown from '../Markdown';
 import { Link } from '@reach/router';
 import { ROUTES } from '../../consts';
 import EntryTimestamp from './components/EntryTimestamp';
 import EntryTitle from './components/EntryTitle';
-import store from '../../store';
+import { Entry as EntryType } from '../../types';
 
 const useStyles = makeStyles(theme => ({
   entryRoot: {
@@ -23,41 +22,29 @@ const useStyles = makeStyles(theme => ({
 }));
 
 type Props = {
-  entry: firebaseApp.firestore.QueryDocumentSnapshot<firebaseApp.firestore.DocumentData>;
+  entry: EntryType;
+  onClick: () => void;
 };
 
-export default function Entry({ entry }: Props) {
+export default function Entry({ entry, onClick }: Props) {
   const classes = useStyles();
-
-  const entryData = entry.data();
-
-  const entryObject = {
-    id: entry.id,
-    text: entryData.text,
-    date: entryData.timestamp.toDate(),
-    tags: entryData.tags,
-    title: entryData.title,
-  };
-
-  const handleClick = () => store.setCurrentEntry(entryObject);
 
   return (
     <div className={classes.entryRoot} id={entry.id}>
       <Link
-        to={ROUTES.DETAIL}
-        state={entryObject}
-        onClick={handleClick}
+        to={ROUTES.getEntryDetailPath(entry.id)}
+        onClick={onClick}
         className={classes.entryLink}
       >
-        <EntryTitle>{entryData.title}</EntryTitle>
+        <EntryTitle>{entry.title}</EntryTitle>
         <EntryTimestamp>
-          {entryObject.date.toLocaleDateString('en-US', {
+          {entry.date.toLocaleDateString('en-US', {
             year: 'numeric',
             month: 'long',
             day: 'numeric',
           })}
         </EntryTimestamp>
-        <Markdown id={entry.id} text={entryObject.text} />
+        <Markdown id={entry.id} text={entry.text} />
       </Link>
     </div>
   );

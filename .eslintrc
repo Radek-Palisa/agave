@@ -1,31 +1,46 @@
 {
-"extends": [
+  "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:prettier/recommended"
-],
-"plugins": ["react", "@typescript-eslint", "prettier"],
-"env": {
+  ],
+  "plugins": [
+    "react",
+    "@typescript-eslint",
+    "prettier"
+  ],
+  "env": {
     "node": true,
     "browser": true,
     "jasmine": true,
     "jest": true
-},
-"rules": {
-    "prettier/prettier": ["error", { "singleQuote": true }],
+  },
+  "rules": {
+    "prettier/prettier": [
+      "error",
+      {
+        "singleQuote": true
+      }
+    ],
     "@typescript-eslint/explicit-function-return-type": 0,
     "@typescript-eslint/no-empty-function": 0,
     "@typescript-eslint/ban-ts-comment": 0,
     "@typescript-eslint/explicit-module-boundary-types": 0,
     "@typescript-eslint/no-explicit-any": 0,
-    "@typescript-eslint/no-unused-vars": 0
-},
-"settings": {
+    "@typescript-eslint/no-unused-vars": [
+      2,
+      {
+        "argsIgnorePattern": "^_"
+      }
+    ],
+    "react/react-in-jsx-scope": 0
+  },
+  "settings": {
     "react": {
-    "pragma": "React",
-    "version": "detect"
+      "pragma": "React",
+      "version": "detect"
     }
-},
-"parser": "@typescript-eslint/parser"
+  },
+  "parser": "@typescript-eslint/parser"
 }
