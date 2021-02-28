@@ -2,7 +2,7 @@ import { RouteComponentProps } from '@reach/router';
 import React, { useEffect } from 'react';
 import store from '../store';
 import Editor from './Editor/Editor';
-import { Entry, PostEntryPayload } from '../types';
+import { Entry } from '../types';
 import { useError } from '../providers/ErrorProvider';
 import { ROUTES } from '../consts';
 import { useCurrentEntry } from '../providers/CurrentEntryProvider';

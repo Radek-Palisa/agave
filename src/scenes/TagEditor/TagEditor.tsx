@@ -11,7 +11,7 @@ import TagEditorItem from './components/TagEditorItem';
 import Modal from '../../components/Modal';
 import useSubscribe from '../../services/useSubscribe';
 
-export default function TagEditor(props: RouteComponentProps) {
+export default function TagEditor(_: RouteComponentProps) {
   const { data } = useSubscribe<Tag[]>(store.subscribeUserTags);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const tagIdToBeDeleted = useRef<string>('');

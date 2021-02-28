@@ -15,6 +15,7 @@ const uiConfig = {
   signInFlow: 'popup',
   signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
   callbacks: {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     signInSuccessWithAuthResult: (authResult: any, redirectUrl: any) => {
       // Process result. This will not trigger on merge conflicts.
       // On success redirect to signInSuccessUrl.
@@ -23,7 +24,7 @@ const uiConfig = {
   },
 };
 
-export default function LoginPage({ location, navigate }: any) {
+export default function LoginPage(_: any) {
   const authStatus = useAuth();
 
   // useEffect(() => {

@@ -1,11 +1,11 @@
 import React from 'react';
 import { makeStyles, Typography } from '@material-ui/core';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
   entryTitleRoot: {
     margin: '0 0 10px',
   },
-}));
+});
 
 type Props = {
   children: React.ReactNode;

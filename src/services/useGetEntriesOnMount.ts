@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import firebaseApp from 'firebase/app';
 import { useAuth } from '../providers/AuthProvider';
 import store from '../store';
-import { MonthEntries } from '../types';
 
 export default function useGetEntriesOnMount() {
   const authStatus = useAuth();

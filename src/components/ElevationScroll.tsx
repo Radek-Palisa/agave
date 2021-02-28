@@ -6,7 +6,7 @@ type Props = {
 };
 
 export default function ElevationScroll({ children }: Props) {
-  const trigger = useScrollTrigger({
+  useScrollTrigger({
     disableHysteresis: true,
     threshold: 0,
   });
