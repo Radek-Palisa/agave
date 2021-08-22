@@ -17,6 +17,7 @@ import { useCurrentEntry } from '../../providers/CurrentEntryProvider';
 const useStyles = makeStyles(theme => ({
   detailRoot: {
     padding: '80px 20px 50vh',
+    wordBreak: 'break-word',
   },
   detailHeader: {
     display: 'flex',
