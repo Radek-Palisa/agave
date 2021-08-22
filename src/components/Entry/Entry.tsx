@@ -11,6 +11,7 @@ const useStyles = makeStyles(theme => ({
   entryRoot: {
     marginBottom: theme.spacing(6),
     padding: theme.spacing(0, 2.5),
+    wordBreak: 'break-word',
   },
   entryLink: {
     display: 'block',
