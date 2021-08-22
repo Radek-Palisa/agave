@@ -57,6 +57,8 @@ export default function HomeNav() {
       >
         <div className={classes.drawerContents}>
           <Link to={ROUTES.SETTINGS}>Settings</Link>
+          <br />
+          <Link to={ROUTES.LOGIN}>Login</Link>
         </div>
       </SwipeableDrawer>
     </div>
