@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core';
+import makeStyles from '@material-ui/styles/makeStyles';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 import PageWidth from './PageWidth';
 

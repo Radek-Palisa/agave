@@ -6,7 +6,8 @@ import AppHeader from '../../components/AppHeader';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { DeleteEntry } from './components/DeleteEntry';
 import { ROUTES } from '../../consts';
-import { IconButton, makeStyles } from '@material-ui/core';
+import { IconButton } from '@material-ui/core';
+import makeStyles from '@material-ui/styles/makeStyles';
 import EntryTitle from '../../components/Entry/components/EntryTitle';
 import EntryTimestamp from '../../components/Entry/components/EntryTimestamp';
 import PageWidth from '../../components/PageWidth';
@@ -69,6 +70,7 @@ export default function Detail(_: RouteComponentProps) {
           }}
           color="primary"
           aria-label="add entry"
+          size="large"
         >
           <ArrowBackIcon />
         </IconButton>
@@ -80,6 +82,7 @@ export default function Detail(_: RouteComponentProps) {
             aria-controls="detail-menu"
             aria-haspopup="true"
             onClick={handleEditClick}
+            size="large"
           >
             <EditIcon />
           </IconButton>

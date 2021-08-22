@@ -5,7 +5,7 @@ import { Tag } from '../../../types';
 import TextField from '@material-ui/core/TextField';
 import store from '../../../store';
 import useDebounce from '../../../services/useDebounce';
-import { makeStyles } from '@material-ui/core';
+import makeStyles from '@material-ui/styles/makeStyles';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -55,7 +55,7 @@ export default function TagEditorItem({ tag, autoFocus, onDelete }: Props) {
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
       />
-      <IconButton aria-label="delete" onClick={onDelete}>
+      <IconButton aria-label="delete" onClick={onDelete} size="large">
         <DeleteIcon />
       </IconButton>
     </div>

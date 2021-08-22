@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { makeStyles, Chip } from '@material-ui/core';
+import { Chip } from '@material-ui/core';
+import makeStyles from '@material-ui/styles/makeStyles';
 import TextField from '@material-ui/core/TextField';
 import useGetSortedTags from '../services/useGetSortedTags';
 import { Entry } from '../../../types';

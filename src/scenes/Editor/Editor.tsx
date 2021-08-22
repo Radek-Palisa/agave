@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { makeStyles } from '@material-ui/core';
+import makeStyles from '@material-ui/styles/makeStyles';
 import AppHeader from '../../components/AppHeader';
 import Markdown from '../../components/Markdown';
 import VisibilityIcon from '@material-ui/icons/Visibility';
@@ -82,6 +82,7 @@ export default function Editor({ backLinkProps, navTitle, onChange, initialValue
             onClick={() => setIsViewingDocs(prev => !prev)}
             color={isPreviewing ? 'primary' : 'default'}
             aria-label="toggle visibility"
+            size="large"
           >
             <MenuBookIcon />
           </IconButton>
@@ -89,6 +90,7 @@ export default function Editor({ backLinkProps, navTitle, onChange, initialValue
             onClick={() => setIsPreviewing(prev => !prev)}
             color={isPreviewing ? 'primary' : 'default'}
             aria-label="toggle visibility"
+            size="large"
           >
             <VisibilityIcon />
           </IconButton>

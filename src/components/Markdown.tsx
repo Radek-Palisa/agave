@@ -1,6 +1,6 @@
 import React from 'react';
 import MarkdownToJSX from 'markdown-to-jsx';
-import { makeStyles } from '@material-ui/core';
+import makeStyles from '@material-ui/styles/makeStyles';
 
 const useStyles = makeStyles(theme => ({
   root: {

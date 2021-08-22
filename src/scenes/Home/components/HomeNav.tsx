@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core';
+import makeStyles from '@material-ui/styles/makeStyles';
 import { navigate } from '@reach/router';
 import IconButton from '@material-ui/core/IconButton';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
@@ -35,10 +35,16 @@ export default function HomeNav() {
         }}
         color="primary"
         aria-label="add entry"
+        size="large"
       >
         <AddCircleOutlineIcon />
       </IconButton>
-      <IconButton onClick={() => setIsDrawerOpen(true)} color="primary" aria-label="menu">
+      <IconButton
+        onClick={() => setIsDrawerOpen(true)}
+        color="primary"
+        aria-label="menu"
+        size="large"
+      >
         <SortIcon className={classes.menuIcon} />
       </IconButton>
       <SwipeableDrawer

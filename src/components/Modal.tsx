@@ -1,7 +1,8 @@
 import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { Theme } from '@material-ui/core/styles';
+import makeStyles from '@material-ui/styles/makeStyles';
 import Typography from '@material-ui/core/Typography';
 import DialogActions from '@material-ui/core/DialogActions';
 
@@ -51,7 +52,7 @@ export default function Modal({
       aria-labelledby="modal-title"
       aria-describedby="modal-description"
     >
-      <DialogTitle disableTypography className={classes.root}>
+      <DialogTitle className={classes.root}>
         <Typography align="center" component="h2" id="modal-title">
           <br />
           {icon}

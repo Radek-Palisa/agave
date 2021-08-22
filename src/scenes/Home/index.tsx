@@ -3,7 +3,7 @@ import { RouteComponentProps } from '@reach/router';
 import Entry from '../../components/Entry/Entry';
 import useGetEntriesOnMount from '../../services/useGetEntriesOnMount';
 import AppHeader from '../../components/AppHeader';
-import { makeStyles } from '@material-ui/core';
+import makeStyles from '@material-ui/styles/makeStyles';
 import ErrorText from '../../components/ErrorText';
 import Logo from '../../components/Logo';
 import HomeNav from './components/HomeNav';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core';
+import makeStyles from '@material-ui/styles/makeStyles';
 import IconButton from '@material-ui/core/IconButton';
 
 const useStyles = makeStyles({
@@ -16,7 +16,7 @@ export default function Logo() {
   };
 
   return (
-    <IconButton onClick={handleClick}>
+    <IconButton onClick={handleClick} size="large">
       <img src="/agave.png" width="20px" className={classes.logo} />
     </IconButton>
   );

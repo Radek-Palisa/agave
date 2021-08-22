@@ -6,7 +6,7 @@ import { ROUTES } from '../consts';
 import ViewStreamIcon from '@material-ui/icons/ViewStream';
 import TuneIcon from '@material-ui/icons/Tune';
 import AddBoxOutlinedIcon from '@material-ui/icons/AddBoxOutlined';
-import { makeStyles } from '@material-ui/core';
+import makeStyles from '@material-ui/styles/makeStyles';
 
 const useStyles = makeStyles(theme => ({
   root: {

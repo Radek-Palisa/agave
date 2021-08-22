@@ -21,6 +21,7 @@ export function DeleteEntry({ onEntryDelete }: Props) {
         aria-controls="detail-menu"
         aria-haspopup="true"
         onClick={() => setConfirmDeleteModalOpen(true)}
+        size="large"
       >
         <DeleteOutlineIcon />
       </IconButton>

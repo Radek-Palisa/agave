@@ -3,7 +3,9 @@ import Dialog from '@material-ui/core/Dialog';
 import { DialogTitle, DialogActions, Button } from '@material-ui/core';
 import { useError } from '../providers/ErrorProvider';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
-import { Typography, makeStyles } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
+
+import makeStyles from '@material-ui/styles/makeStyles';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -32,7 +34,7 @@ export default function ErrorModal() {
       aria-labelledby="simple-dialog-title"
       aria-describedby="simple-modal-description"
     >
-      <DialogTitle disableTypography className={classes.root}>
+      <DialogTitle className={classes.root}>
         <Typography align="center" component="h2" id="simple-dialog-title">
           <br />
           <HighlightOffIcon fontSize="large" />
