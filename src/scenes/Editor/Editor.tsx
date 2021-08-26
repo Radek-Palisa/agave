@@ -29,12 +29,13 @@ type Props = {
     state?: Entry;
   };
   navTitle: string;
-  onChange: (values: PostEntryPayload) => void;
+  onChange: (values: PostEntryPayload) => Promise<void>;
   initialValues: Entry;
 };
 
 export default function Editor({ backLinkProps, navTitle, onChange, initialValues }: Props) {
   const classes = useStyles();
+  const [isSaving, setIsSaving] = useState(false);
   const [isPreviewing, setIsPreviewing] = useState(false);
   const [isViewingDocs, setIsViewingDocs] = useState(false);
   const [title, setTitle] = useState(initialValues.title);
@@ -50,16 +51,25 @@ export default function Editor({ backLinkProps, navTitle, onChange, initialValue
       : {}
   );
 
-  const debouncedTitle = useDebounce(title, 300);
-  const debouncedText = useDebounce(text, 500);
+  const debouncedTitle = useDebounce(title, 500);
+  const debouncedText = useDebounce(text, 800);
 
   useEffect(() => {
-    onChange({
+    setIsSaving(true);
+
+    const savePayload = {
       title: debouncedTitle,
       text: debouncedText,
       date: new Date(`${date}T${time}`),
       tags: Object.keys(tags).filter(i => tags[i]),
-    });
+    };
+
+    onChange(savePayload)
+      .then(() => setIsSaving(false))
+      .catch(e => {
+        // TODO
+        alert(e.message);
+      });
   }, [debouncedText, debouncedTitle, time, date, tags]);
 
   useEffect(() => {
@@ -76,7 +86,9 @@ export default function Editor({ backLinkProps, navTitle, onChange, initialValue
     <PageWidth>
       <AppHeader>
         <BackButton {...backLinkProps} />
-        <span>{navTitle}</span>
+        <span>
+          {navTitle} - {isSaving ? 'saving' : 'saved'}
+        </span>
         <div>
           <IconButton
             onClick={() => setIsViewingDocs(prev => !prev)}

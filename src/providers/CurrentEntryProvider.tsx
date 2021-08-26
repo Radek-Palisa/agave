@@ -1,4 +1,4 @@
-import { navigate } from '@reach/router';
+// import { navigate } from '@reach/router';
 import {
   createContext,
   ReactNode,
@@ -9,6 +9,7 @@ import {
   useState,
 } from 'react';
 import useEntryLocalBackup from '../services/useEntryLocalBackup';
+import store from '../store';
 import { Entry, PostEntryPayload } from '../types';
 
 type Query = {
@@ -24,20 +25,20 @@ const initialState: Query = {
 };
 
 type CurrentEntryContextValue = Query & {
-  saveEntryLocally: (values: PostEntryPayload) => void;
+  saveEntryLocally: (values: PostEntryPayload) => Promise<void>;
   saveEntryRemotely: (saveMethod: (entry: Entry) => Promise<void>) => Promise<void>;
   setCurrentEntry: (entry: Entry | null) => void;
 };
 
 const CurrentEntryContext = createContext<CurrentEntryContextValue>({
   ...initialState,
-  saveEntryLocally: () => undefined,
+  saveEntryLocally: () => Promise.resolve(),
   saveEntryRemotely: () => Promise.resolve(),
   setCurrentEntry: () => undefined,
 });
 
 export default function CurrentEntryProvider({ children }: { children: ReactNode }) {
-  const { getBackup, setBackup } = useEntryLocalBackup();
+  const { setBackup } = useEntryLocalBackup();
   const tempEntry = useRef<Entry | null>(null);
   const [query, setQuery] = useState<Query>(initialState);
 
@@ -48,20 +49,20 @@ export default function CurrentEntryProvider({ children }: { children: ReactNode
     // means that the app has been closed before saving the latest
     // changes. Restore the session.
 
-    const backup = getBackup();
+    // const backup = getBackup();
 
-    if (backup) {
-      const { pathname, ...entry } = backup;
+    // if (backup) {
+    //   const { pathname, ...entry } = backup;
 
-      setQuery({
-        data: entry,
-        isLoading: false,
-        error: null,
-      });
+    //   setQuery({
+    //     data: entry,
+    //     isLoading: false,
+    //     error: null,
+    //   });
 
-      navigate(pathname);
-      return;
-    }
+    //   navigate(pathname);
+    //   return;
+    // }
 
     // if !backup but there's an id in the url, the user
     // has landed directly on the edit or detail page,
@@ -84,10 +85,12 @@ export default function CurrentEntryProvider({ children }: { children: ReactNode
 
       tempEntry.current = updatedEntry;
 
-      setBackup({
-        ...updatedEntry,
-        pathname: window.location.pathname,
-      });
+      // setBackup({
+      //   ...updatedEntry,
+      //   pathname: window.location.pathname,
+      // });
+
+      return store.editEntry(updatedEntry);
     },
     [entryId]
   );
