@@ -53,13 +53,13 @@ class Store {
     });
   };
 
-  editEntry = async ({ date, id, ...payload }: Entry) => {
-    return this.getEntriesRef()
-      .doc(id)
-      .update({
-        ...payload,
-        timestamp: app.firestore.Timestamp.fromDate(date),
-      });
+  editEntry = async ({ date, id, ...payload }: Partial<Entry> & { id: string }) => {
+    const updatePayload = {
+      ...payload,
+      ...(date ? { timestamp: app.firestore.Timestamp.fromDate(date) } : {}),
+    };
+
+    return this.getEntriesRef().doc(id).update(updatePayload);
   };
 
   deleteEntry = async (entryId: string) => {
