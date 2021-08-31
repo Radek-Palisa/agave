@@ -24,14 +24,12 @@ const initialState: Query = {
 };
 
 type CurrentEntryContextValue = Query & {
-  saveEntryLocally: (values: PostEntryPayload) => Promise<void>;
-  saveEntryRemotely: (saveMethod: (entry: Entry) => Promise<void>) => Promise<void>;
+  saveEntryRemotely: (values: PostEntryPayload) => Promise<void>;
   setCurrentEntry: (entry: Entry | null) => void;
 };
 
 const CurrentEntryContext = createContext<CurrentEntryContextValue>({
   ...initialState,
-  saveEntryLocally: () => Promise.resolve(),
   saveEntryRemotely: () => Promise.resolve(),
   setCurrentEntry: () => undefined,
 });
@@ -55,7 +53,7 @@ export default function CurrentEntryProvider({ children }: { children: ReactNode
     });
   }, []);
 
-  const saveEntryLocally = useCallback(
+  const saveEntryRemotely = useCallback(
     (values: PostEntryPayload) => {
       const updatedEntry = {
         ...values,
@@ -77,34 +75,6 @@ export default function CurrentEntryProvider({ children }: { children: ReactNode
     [entryId]
   );
 
-  const saveEntryRemotely = useCallback(
-    (saveMethod: (entry: Entry) => Promise<void>) => {
-      // TODO
-      // avoid saving when no changes have been made
-
-      // TODO
-      if (!tempEntry.current) return Promise.resolve();
-
-      // TODO this only relevant to Edit Entry
-      // set it optimistically
-      setQuery({
-        data: tempEntry.current,
-        isLoading: false,
-        error: null,
-      });
-
-      return saveMethod(tempEntry.current)
-        .then(() => {
-          tempEntry.current = null;
-        })
-        .catch(error => {
-          error._entryId = tempEntry.current?.id;
-          throw error;
-        });
-    },
-    [setQuery]
-  );
-
   const setCurrentEntry = useCallback(
     (entry: Entry | null) =>
       setQuery({
@@ -116,7 +86,6 @@ export default function CurrentEntryProvider({ children }: { children: ReactNode
   );
 
   const value: CurrentEntryContextValue = {
-    saveEntryLocally,
     saveEntryRemotely,
     setCurrentEntry,
     ...query,

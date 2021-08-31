@@ -8,7 +8,7 @@ import { useCurrentEntry } from '../providers/CurrentEntryProvider';
 
 export default function EditEntry(_: RouteComponentProps) {
   // const [, setError] = useError();
-  const { data, isLoading, saveEntryLocally } = useCurrentEntry();
+  const { data, isLoading, saveEntryRemotely } = useCurrentEntry();
 
   // useEffect(() => {
   //   return () => {
@@ -43,7 +43,7 @@ export default function EditEntry(_: RouteComponentProps) {
       backLinkProps={{ to: `/entry/${data.id}` }}
       navTitle="Edit Entry"
       initialValues={data}
-      onChange={saveEntryLocally}
+      onChange={saveEntryRemotely}
     />
   );
 }

@@ -17,7 +17,7 @@ const initialValues: Entry = {
 };
 export default function AddEntry(_: RouteComponentProps) {
   const isCreated = useRef(false);
-  const { data, isLoading, saveEntryLocally, setCurrentEntry } = useCurrentEntry();
+  const { data, isLoading, saveEntryRemotely, setCurrentEntry } = useCurrentEntry();
   // const [, setError] = useError();
 
   // useEffect(() => {
@@ -65,7 +65,7 @@ export default function AddEntry(_: RouteComponentProps) {
       });
     }
 
-    return saveEntryLocally(values);
+    return saveEntryRemotely(values);
   };
 
   if (isLoading) {
