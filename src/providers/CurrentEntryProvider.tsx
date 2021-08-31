@@ -90,6 +90,14 @@ export default function CurrentEntryProvider({ children }: { children: ReactNode
       //   pathname: window.location.pathname,
       // });
 
+      // TODO this only relevant to Edit Entry
+      // set it optimistically
+      setQuery({
+        data: tempEntry.current,
+        isLoading: false,
+        error: null,
+      });
+
       return store.editEntry(updatedEntry);
     },
     [entryId]
