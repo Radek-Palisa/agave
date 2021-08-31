@@ -8,7 +8,6 @@ import {
   useRef,
   useState,
 } from 'react';
-import useEntryLocalBackup from '../services/useEntryLocalBackup';
 import store from '../store';
 import { Entry, PostEntryPayload } from '../types';
 
@@ -38,33 +37,13 @@ const CurrentEntryContext = createContext<CurrentEntryContextValue>({
 });
 
 export default function CurrentEntryProvider({ children }: { children: ReactNode }) {
-  const { setBackup } = useEntryLocalBackup();
   const tempEntry = useRef<Entry | null>(null);
   const [query, setQuery] = useState<Query>(initialState);
 
   const entryId = query.data?.id;
 
   useEffect(() => {
-    // When the page loads and there's backup, it most likely
-    // means that the app has been closed before saving the latest
-    // changes. Restore the session.
-
-    // const backup = getBackup();
-
-    // if (backup) {
-    //   const { pathname, ...entry } = backup;
-
-    //   setQuery({
-    //     data: entry,
-    //     isLoading: false,
-    //     error: null,
-    //   });
-
-    //   navigate(pathname);
-    //   return;
-    // }
-
-    // if !backup but there's an id in the url, the user
+    // if there's an id in the url, the user
     // has landed directly on the edit or detail page,
     // so get the data
     // TODO
@@ -84,11 +63,6 @@ export default function CurrentEntryProvider({ children }: { children: ReactNode
       };
 
       tempEntry.current = updatedEntry;
-
-      // setBackup({
-      //   ...updatedEntry,
-      //   pathname: window.location.pathname,
-      // });
 
       // TODO this only relevant to Edit Entry
       // set it optimistically
@@ -122,7 +96,6 @@ export default function CurrentEntryProvider({ children }: { children: ReactNode
       return saveMethod(tempEntry.current)
         .then(() => {
           tempEntry.current = null;
-          setBackup(null);
         })
         .catch(error => {
           error._entryId = tempEntry.current?.id;

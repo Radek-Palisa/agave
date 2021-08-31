@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Chip } from '@material-ui/core';
 import makeStyles from '@material-ui/styles/makeStyles';
 import TextField from '@material-ui/core/TextField';
@@ -50,16 +50,6 @@ export default function EditorMeta({ entryData }: Props) {
       ...prev,
       [itemId]: !prev[itemId],
     }));
-
-  // useEffect(() => {
-  //   store.backup = {
-  //     id: entryData?.id,
-  //     text: debouncedText,
-  //     date: `${date}T${time}`,
-  //     pathname: window.location.pathname,
-  //     tags: Object.keys(tags).filter(i => tags[i]),
-  //   };
-  // }, [debouncedText, time, date, tags]);
 
   return (
     <>
